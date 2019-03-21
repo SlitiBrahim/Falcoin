@@ -48,13 +48,12 @@ class Block:
     def set_timestamp(self, timestamp):
         self.__timestamp = timestamp
 
-    @staticmethod
-    def hash(block):
-        if block.get_nonce() is None or block.get_prev_hash() is None:
+    def compute_hash(self):
+        if self.__nonce is None or self.__prev_hash is None:
             raise Exception(f"Value of 'nonce' or 'prev_hash' property of the block is None")
 
         # TODO: replace it when Transaction Class is implemented
-        transactions = json.dumps(block.get_transactions()).encode().decode("utf-8")
-        key = block.get_prev_hash() + transactions + str(block.get_nonce())
+        transactions = json.dumps(self.__transactions).encode().decode("utf-8")
+        key = self.__prev_hash + transactions + str(self.__nonce)
 
-        return sha256(key.encode()).hexdigest()
+        self.__hash = sha256(key.encode()).hexdigest()
