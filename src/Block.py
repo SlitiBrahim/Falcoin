@@ -6,9 +6,8 @@ class Block:
     def __init__(self):
         self.__hash = None
         self.__index = None # TODO: Replace it with Blockchain.get_chain_length()
-        self.__prev_hash = None
+        self.__prev_hash = "0" * 64
         self.__proof_of_work = None
-        self.__nonce = None
         self.__transactions = []
         self.__timestamp = None
 
@@ -30,11 +29,11 @@ class Block:
     def set_prev_hash(self, prev_hash):
         self.__prev_hash = prev_hash
 
-    def get_nonce(self):
-        return self.__nonce
+    def get_proof_of_work(self):
+        return self.__proof_of_work
 
-    def set_nonce(self, nonce):
-        self.__nonce = nonce
+    def set_proof_of_work(self, proof_of_work):
+        self.__proof_of_work = proof_of_work
 
     def get_transactions(self):
         return self.__transactions
@@ -48,12 +47,13 @@ class Block:
     def set_timestamp(self, timestamp):
         self.__timestamp = timestamp
 
-    def compute_hash(self):
-        if self.__nonce is None or self.__prev_hash is None:
-            raise Exception(f"Value of 'nonce' or 'prev_hash' property of the block is None")
-
+    def compute_hash(self, nonce = None):
         # TODO: replace it when Transaction Class is implemented
         transactions = json.dumps(self.__transactions).encode().decode("utf-8")
-        key = self.__prev_hash + transactions + str(self.__nonce)
 
-        self.__hash = sha256(key.encode()).hexdigest()
+        # get nonce from parameter if issued otherwise get it from proof_of_work
+        # allow to compute hash both by passing nonce parameter or by using the one from the block
+        nonce_val = nonce if nonce is not None else self.__proof_of_work.get_nonce()
+        key = self.__prev_hash + transactions + str(nonce_val)
+
+        return sha256(key.encode()).hexdigest()
