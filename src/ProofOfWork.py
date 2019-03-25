@@ -1,10 +1,12 @@
 class ProofOfWork:
 
-    difficulty = 4
+    difficulty = 3
 
     def __init__(self):
+        # TODO: Implement target
         self.__target = None
         self.__nonce = None
+        self.__hash = None
 
     def get_target(self):
         return self.__target
@@ -18,19 +20,32 @@ class ProofOfWork:
     def set_nonce(self, nonce):
         self.__nonce = nonce
 
+    def get_hash(self):
+        return self.__hash
+
+    def set_hash(self, hash):
+        self.__hash = hash
+
     @staticmethod
     def run(block):
         proof_of_work = ProofOfWork()
+        nonce = 0
 
         while True:
-            hash = block.compute_hash()
-            print("nonce:", block.get_nonce())
+            str_hash = block.compute_hash(nonce)
+            print("nonce:", nonce)
 
-            if hash[:ProofOfWork.difficulty] == ("0" * ProofOfWork.difficulty):
+            if ProofOfWork.__is_valid_hash(str_hash):
                 break
             else:
-                block.increment_nonce()
+                nonce += 1
 
-        print("hash:", hash)
+        proof_of_work.set_hash(str_hash)
+        proof_of_work.set_nonce(nonce)
 
-        return proof_of_work, hash
+        return proof_of_work
+
+    @staticmethod
+    def __is_valid_hash(str_hash):
+        # TODO: Change it with: "< difficulty"
+        return str_hash[:ProofOfWork.difficulty] == ("0" * ProofOfWork.difficulty)
