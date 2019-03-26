@@ -1,10 +1,11 @@
 class ProofOfWork:
 
-    difficulty = 3
+    # TODO: Get difficulty from conf file
+    difficulty = 20
 
     def __init__(self):
         # TODO: Implement target
-        self.__target = None
+        self.__target = ProofOfWork.compute_target()
         self.__nonce = None
         self.__hash = None
 
@@ -32,7 +33,6 @@ class ProofOfWork:
         nonce = 0
 
         while True:
-            print("nonce:", nonce)
             str_hash = block.compute_hash(nonce)
 
             if not ProofOfWork.__is_valid_hash(str_hash):
@@ -47,5 +47,10 @@ class ProofOfWork:
 
     @staticmethod
     def __is_valid_hash(str_hash):
-        # TODO: Change it with: "< difficulty"
-        return str_hash[:ProofOfWork.difficulty] == ("0" * ProofOfWork.difficulty)
+        return int(str_hash, 16) < ProofOfWork.compute_target()
+
+    @staticmethod
+    def compute_target():
+        target = 1 << (256 - ProofOfWork.difficulty)
+
+        return target
