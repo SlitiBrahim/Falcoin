@@ -23,8 +23,8 @@ class ProofOfWork:
     def get_hash(self):
         return self.__hash
 
-    def set_hash(self, hash):
-        self.__hash = hash
+    def set_hash(self, str_hash):
+        self.__hash = str_hash
 
     @staticmethod
     def run(block):
@@ -32,13 +32,13 @@ class ProofOfWork:
         nonce = 0
 
         while True:
-            str_hash = block.compute_hash(nonce)
             print("nonce:", nonce)
+            str_hash = block.compute_hash(nonce)
 
-            if ProofOfWork.__is_valid_hash(str_hash):
-                break
-            else:
+            if not ProofOfWork.__is_valid_hash(str_hash):
                 nonce += 1
+            else:
+                break
 
         proof_of_work.set_hash(str_hash)
         proof_of_work.set_nonce(nonce)
