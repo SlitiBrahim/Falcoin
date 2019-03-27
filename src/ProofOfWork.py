@@ -1,7 +1,8 @@
 class ProofOfWork:
 
     # TODO: Get difficulty from conf file
-    difficulty = 20
+    # cursor that we will use to adjust target
+    difficulty = 21
 
     def __init__(self):
         # TODO: Implement target
@@ -29,6 +30,7 @@ class ProofOfWork:
 
     @staticmethod
     def run(block):
+        """Return proof of work of a block to be mined."""
         proof_of_work = ProofOfWork()
         nonce = 0
 
@@ -36,6 +38,7 @@ class ProofOfWork:
             str_hash = block.compute_hash(nonce)
 
             if not ProofOfWork.__is_valid_hash(str_hash):
+                # increment nonce if generated hash is not valid
                 nonce += 1
             else:
                 break
@@ -47,10 +50,17 @@ class ProofOfWork:
 
     @staticmethod
     def __is_valid_hash(str_hash):
+        """Return a boolean checking if hash is below the computed target."""
         return int(str_hash, 16) < ProofOfWork.compute_target()
 
     @staticmethod
     def compute_target():
+        """Return the target to reach."""
+
+        # left shift to 1 so: 1 * 2^(256 - difficulty)
+        # make a very large number that we can adjust with difficulty
+        # more the difficulty is great, more the target will be huge and
+        # the winning number hard to find
         target = 1 << (256 - ProofOfWork.difficulty)
 
         return target
