@@ -3,12 +3,12 @@ import json
 
 class Block:
 
-    def __init__(self):
+    def __init__(self, transactions = None):
         self.__hash = None
         self.__index = None # TODO: Replace it with Blockchain.get_chain_length()
         self.__prev_hash = "0" * 64
         self.__proof_of_work = None
-        self.__transactions = []
+        self.__transactions = transactions if transactions is not None else []
         self.__timestamp = None
 
     def get_hash(self):
@@ -40,6 +40,8 @@ class Block:
 
     def set_transactions(self, transactions):
         self.__transactions = transactions
+
+    # TODO: Add add_transaction method who  check if transaction is already existing
 
     def get_timestamp(self):
         return self.__timestamp
