@@ -2,7 +2,7 @@ class ProofOfWork:
 
     # TODO: Get difficulty from conf file
     # cursor that we will use to adjust target
-    difficulty = 21
+    difficulty = 15
 
     def __init__(self):
         # TODO: Implement target

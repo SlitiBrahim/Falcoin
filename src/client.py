@@ -1,9 +1,18 @@
 from Block import Block
 from GenesisBlock import GenesisBlock
 from ProofOfWork import ProofOfWork
+from Blockchain import Blockchain
 import time
 
 def main():
+    blockchain = Blockchain()
+
+    print(blockchain.get_chain())
+
+    print(blockchain.get_chain())
+
+    exit()
+
     block = GenesisBlock()
 
     proof_of_work = ProofOfWork.run(block)
