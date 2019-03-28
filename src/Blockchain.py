@@ -11,18 +11,24 @@ class Blockchain:
 
         return self.__chain[start:]
 
+    def get_last_block(self):
+        return self.__chain[-1]
 
-    def add_to_chain(self, obj):
-        if type(obj) is list:
-            self.__chain += obj
-        elif isinstance(obj, Block):
-            self.__chain.append(obj)
-        else:
-            raise Exception("obj to add to chain must me list of blocks or instance of block")
+    def get_chain_length(self):
+        return len(self.__chain)
+
+    def add_block_to_chain(self, block):
+        index = self.get_chain_length()
+        block.set_index(index)
+
+        # check if block already exist in the chain
+        if self.find_block(block.get_hash()) is not None:
+            raise Exception("Block already exist in chain")
+
+        self.__chain.append(block)
 
         return self.__chain
 
-    # TODO: TEST THAT !
     def find_block(self, str_hash):
         """Retrieve a block in the chain by its hash"""
 
