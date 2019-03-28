@@ -36,5 +36,16 @@ def main():
     print("nonce:", block1.get_proof_of_work().get_nonce())
     print(block1.get_timestamp())
 
+    block3 = Block()
+
+    block3.set_prev_hash(blockchain.get_last_block().get_hash())
+    proof_of_work = ProofOfWork.run(block3)
+    block3.set_proof_of_work(proof_of_work)
+    block3.set_hash(proof_of_work.get_hash())
+    block3.set_timestamp(time.time())
+
+    blockchain.add_blocks_to_chain([block3])
+    print("ok")
+
 if __name__ == '__main__':
     main()
