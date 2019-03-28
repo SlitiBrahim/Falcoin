@@ -5,7 +5,7 @@ class Block:
 
     def __init__(self, transactions = None):
         self.__hash = None
-        self.__index = None # TODO: Replace it with Blockchain.get_chain_length()
+        self._index = None # TODO: Replace it with Blockchain.get_chain_length()
         self._prev_hash = None
         self.__proof_of_work = None
         self.__transactions = transactions if transactions is not None else []
@@ -18,10 +18,10 @@ class Block:
         self.__hash = str_hash
 
     def get_index(self):
-        return self.__index
+        return self._index
 
     def set_index(self, index):
-        self.__index = index
+        self._index = index
 
     def get_prev_hash(self):
         return self._prev_hash
