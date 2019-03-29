@@ -2,13 +2,13 @@ from Block import Block
 
 class Blockchain:
 
-    __instancied = False
+    __instantiated = False
 
     def __init__(self):
-        if Blockchain.__instancied:
+        if Blockchain.__instantiated:
             raise Exception("Singleton Blockchain class already instancied.")
         else:
-            Blockchain.__instancied = True
+            Blockchain.__instantiated = True
 
         self.__chain = []
 
