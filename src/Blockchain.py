@@ -6,7 +6,7 @@ class Blockchain:
 
     def __init__(self):
         if Blockchain.__instantiated:
-            raise Exception("Singleton Blockchain class already instancied.")
+            raise Exception("Singleton Blockchain class already instantiated.")
         else:
             Blockchain.__instantiated = True
 
