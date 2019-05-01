@@ -19,33 +19,9 @@ def main():
     print("hash of the mined block:", block.get_hash())
     print("last block hash:", block.get_prev_hash())
     print("nonce:", block.get_proof_of_work().get_nonce())
-    print(block.get_timestamp())
+    print("timestamp:", block.get_timestamp())
 
-    block1 = Block()
-
-    block1.set_prev_hash(blockchain.get_last_block().get_hash())
-    proof_of_work = ProofOfWork.run(block1)
-    block1.set_proof_of_work(proof_of_work)
-    block1.set_hash(proof_of_work.get_hash())
-    block1.set_timestamp(time.time())
-
-    blockchain.add_block_to_chain(block1)
-
-    print("hash of the mined block:", block1.get_hash())
-    print("last block hash:", block1.get_prev_hash())
-    print("nonce:", block1.get_proof_of_work().get_nonce())
-    print(block1.get_timestamp())
-
-    block3 = Block()
-
-    block3.set_prev_hash(blockchain.get_last_block().get_hash())
-    proof_of_work = ProofOfWork.run(block3)
-    block3.set_proof_of_work(proof_of_work)
-    block3.set_hash(proof_of_work.get_hash())
-    block3.set_timestamp(time.time())
-
-    blockchain.add_blocks_to_chain([block3])
-    print("ok")
+    print("debug")
 
 if __name__ == '__main__':
     main()
