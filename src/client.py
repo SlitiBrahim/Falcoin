@@ -1,7 +1,8 @@
-from Block import Block
-from GenesisBlock import GenesisBlock
-from ProofOfWork import ProofOfWork
-from Blockchain import Blockchain
+from blockchain.Block import Block
+from blockchain.GenesisBlock import GenesisBlock
+from blockchain.ProofOfWork import ProofOfWork
+from blockchain.Blockchain import Blockchain
+from blockchain.Transaction import Transaction
 import time
 
 def main():
@@ -13,6 +14,11 @@ def main():
     block.set_proof_of_work(proof_of_work)
     block.set_hash(proof_of_work.get_hash())
     block.set_timestamp(time.time())
+
+    transactions = [
+        Transaction.generate_coinbase_tx()
+    ]
+    block.set_transactions(transactions)
 
     blockchain.add_block_to_chain(block)
 
