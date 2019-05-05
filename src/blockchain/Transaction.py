@@ -16,13 +16,12 @@ class Transaction:
         return self.__outputs
 
     def __calculate_fees(self):
-        if not self.__is_coinbase_tx():
-            # get value of all inputs in a list
-            tx_input_values = list(map(lambda i: i.get_value(), self.__inputs))
-        else:
-            # in case of a coinbase tx, we don't point to prev existing inputs
-            tx_input_values = []
+        if self.__is_coinbase_tx():
+            # to fees for coinbase tx
+            return 0.0
 
+        # get value of all inputs in a list
+        tx_input_values = list(map(lambda i: i.get_value(), self.__inputs))
         # get all values from outputs
         tx_output_values = list(map(lambda o: o.get_value(), self.__outputs))
 
