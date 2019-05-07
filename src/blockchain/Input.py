@@ -4,6 +4,7 @@ class Input:
         self.__prev_tx = prev_tx
         self.__index = index
         self.__output_ref = output
+        # TODO: Add spent property
         # TODO: Add PubSig feature
 
     def get_prev_tx(self):
