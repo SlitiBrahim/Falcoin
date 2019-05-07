@@ -1,8 +1,9 @@
 class Input:
 
-    def __init__(self, prev_tx, index):
+    def __init__(self, prev_tx, index, output = None):
         self.__prev_tx = prev_tx
         self.__index = index
+        self.__output_ref = output
         # TODO: Add PubSig feature
 
     def get_prev_tx(self):
@@ -10,6 +11,9 @@ class Input:
 
     def get_index(self):
         return self.__index
+
+    def get_output_ref(self):
+        return self.__output_ref
 
     def is_empty(self):
         return self.__prev_tx is None and self.__index < 0

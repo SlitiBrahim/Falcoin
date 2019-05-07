@@ -25,7 +25,7 @@ class Transaction:
 
     def _calculate_fees(self):
         # get value of all inputs in a list
-        tx_input_values = list(map(lambda i: i.get_value(), self.__inputs))
+        tx_input_values = list(map(lambda i: i.get_output_ref().get_value(), self.__inputs))
         # get all values from outputs
         tx_output_values = list(map(lambda o: o.get_value(), self.__outputs))
 

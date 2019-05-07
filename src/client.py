@@ -32,7 +32,7 @@ def main():
 
     txs = [
         CoinbaseTransaction(),
-        Transaction(inputs=[transactions[0].get_output(index=0)],
+        Transaction(inputs=[Input(transactions[0], 0, transactions[0].get_output(index=0))],
                     outputs=[Output(15)])
     ]
 
