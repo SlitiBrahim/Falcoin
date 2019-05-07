@@ -54,8 +54,8 @@ class Block:
             raise Exception("block \"_prev_hash\" property cannot be None, it must be set.")
 
         # TODO: replace it when Transaction Class is implemented
-        transactions = json.dumps(self.__transactions).encode().decode("utf-8")
-
+        # transactions = json.dumps(self.__transactions).encode().decode("utf-8")
+        transactions = json.dumps([]).encode().decode("utf-8")
         # get nonce from parameter if issued otherwise get it from proof_of_work
         # allow to compute hash both by passing nonce parameter or by using the one from the block
         nonce_val = nonce if nonce is not None else self.__proof_of_work.get_nonce()
