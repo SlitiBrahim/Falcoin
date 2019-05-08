@@ -8,22 +8,22 @@ from blockchain.Output import Output
 class Transaction:
 
     def __init__(self, inputs, outputs):
-        self.__inputs = inputs
-        self.__outputs = outputs
+        self._inputs = inputs
+        self._outputs = outputs
         self._fees = 0.0
-        self.__hash = self.compute_hash()
+        self._hash = self.compute_hash()
 
     def get_hash(self):
-        return self.__hash
+        return self._hash
 
     def get_inputs(self):
-        return self.__inputs
+        return self._inputs
 
     def get_outputs(self):
-        return self.__outputs
+        return self._outputs
 
     def get_output(self, index):
-        return self.__outputs[index]
+        return self._outputs[index]
 
     def generate_fees(self):
         self._fees = self._calculate_fees()
@@ -32,9 +32,9 @@ class Transaction:
 
     def _calculate_fees(self):
         # get value of all inputs in a list
-        tx_input_values = list(map(lambda i: i.get_output_ref().get_value(), self.__inputs))
+        tx_input_values = list(map(lambda i: i.get_output_ref().get_value(), self._inputs))
         # get all values from outputs
-        tx_output_values = list(map(lambda o: o.get_value(), self.__outputs))
+        tx_output_values = list(map(lambda o: o.get_value(), self._outputs))
 
         return math.fsum(tx_input_values) - math.fsum(tx_output_values)
 
@@ -44,8 +44,8 @@ class Transaction:
     """Returns object as dictionary"""
     def json_obj(self):
         data = {
-            "inputs": [i.json_obj() for i in self.__inputs],
-            "outputs": [o.json_obj() for o in self.__outputs],
+            "inputs": [i.json_obj() for i in self._inputs],
+            "outputs": [o.json_obj() for o in self._outputs],
             "fees": self.generate_fees()
         }
 
