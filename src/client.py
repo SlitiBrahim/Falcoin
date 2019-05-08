@@ -36,6 +36,7 @@ def main():
     ]
     block = Block(txs1)
 
+    block.set_index(1)
     block.set_prev_hash(genesis_block.get_hash())
     pow = ProofOfWork.run(block)
     block.set_proof_of_work(pow)
