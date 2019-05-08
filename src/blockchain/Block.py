@@ -63,3 +63,19 @@ class Block:
         key = self._prev_hash + transactions + str(nonce_val)
 
         return sha256(key.encode()).hexdigest()
+
+    def json_obj(self):
+        data = {
+            "hash": self._hash,
+            "index": self._index,
+            "prev_hash": self._prev_hash,
+            "pow": self._proof_of_work.json_obj(),
+            "transactions": [tx.json_obj() for tx in self._transactions],
+            "timestamp": self._timestamp
+        }
+
+        return data
+
+    """Prints object as a formatted json"""
+    def __str__(self):
+        return json.dumps(self.json_obj(), indent=4)

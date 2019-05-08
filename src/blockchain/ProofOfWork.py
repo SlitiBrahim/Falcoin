@@ -64,3 +64,12 @@ class ProofOfWork:
         target = 1 << (256 - ProofOfWork.difficulty)
 
         return target
+
+    def json_obj(self):
+        data = {
+            "hash": self.__hash,
+            "target": self.__target,
+            "nonce": self.__nonce
+        }
+
+        return data

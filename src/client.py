@@ -18,16 +18,16 @@ def main():
     block = GenesisBlock(transactions)
 
     proof_of_work = ProofOfWork.run(block)
+
     block.set_proof_of_work(proof_of_work)
     block.set_hash(proof_of_work.get_hash())
     block.set_timestamp(time.time())
 
     blockchain.add_block_to_chain(block)
 
-    print("hash of the mined block:", block.get_hash())
-    print("last block hash:", block.get_prev_hash())
-    print("nonce:", block.get_proof_of_work().get_nonce())
-    print("timestamp:", block.get_timestamp())
+    print(block)
+
+    print("next one")
 
     txs = [
         CoinbaseTransaction(),
@@ -39,11 +39,14 @@ def main():
     block1.set_prev_hash(blockchain.get_last_block().get_hash())
 
     pow = ProofOfWork.run(block1)
+
     block1.set_proof_of_work(pow)
     block1.set_hash(pow.get_hash())
     block1.set_timestamp(time.time())
 
     blockchain.add_block_to_chain(block1)
+
+    print(block1)
 
     print("debug")
 
