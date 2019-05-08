@@ -11,17 +11,16 @@ import time
 def main():
     blockchain = Blockchain()
 
-    block = GenesisBlock()
+    transactions = [
+        CoinbaseTransaction()
+    ]
+
+    block = GenesisBlock(transactions)
 
     proof_of_work = ProofOfWork.run(block)
     block.set_proof_of_work(proof_of_work)
     block.set_hash(proof_of_work.get_hash())
     block.set_timestamp(time.time())
-
-    transactions = [
-        CoinbaseTransaction()
-    ]
-    block.set_transactions(transactions)
 
     blockchain.add_block_to_chain(block)
 
