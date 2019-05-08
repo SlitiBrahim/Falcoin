@@ -5,7 +5,6 @@ class ProofOfWork:
     difficulty = 15
 
     def __init__(self):
-        # TODO: Implement target
         self.__target = ProofOfWork.compute_target()
         self.__nonce = None
         self.__hash = None
