@@ -65,3 +65,37 @@ class Transaction:
         data = (tx_data + str(time.time())).encode().decode("utf-8")
 
         return sha256(data.encode()).hexdigest()
+
+    @staticmethod
+    def merkle_root(transactions):
+        is_tx_instances = list(map(lambda obj: isinstance(obj, Transaction), transactions))
+
+        if all(is_tx_instances):
+            # get hash of transactions in a list
+            tx_hashes = [tx.get_hash() for tx in transactions]
+        else:
+            is_str_objects = list(map(lambda obj: isinstance(obj, str), transactions))
+
+            if all(is_str_objects):
+                tx_hashes = transactions
+            else:
+                raise TypeError("\"transactions\" argument must be list of Transaction "
+                                "objects or list of strings")
+
+        if len(tx_hashes) == 1:
+            # return the final hash
+            return tx_hashes.pop()
+        # check if txs number is even (required for merkle root algorithm)
+        elif len(tx_hashes) > 1 and (len(tx_hashes) % 2) != 0:
+            # duplicate last hash so txs number is even
+            tx_hashes.append(tx_hashes[-1])
+
+        tx_hash_pairs = []
+        # iterate over tx_hashes by step 2
+        for i in range(0, len(tx_hashes), 2):
+            # hash of tx_hash_left + tx_hash_right
+            hash_pair = sha256("".join(tx_hashes[i:i+2]).encode()).hexdigest()
+            tx_hash_pairs.append(hash_pair)
+
+        # recursively return reduced tx_hash_pairs until we get a single hash
+        return Transaction.merkle_root(tx_hash_pairs)

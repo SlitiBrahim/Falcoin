@@ -2,10 +2,10 @@ import blockchain.utils as utils
 
 class Input:
 
-    def __init__(self, prev_tx, index, output = None):
+    def __init__(self, prev_tx, index, output_ref = None):
         self.__prev_tx = prev_tx
         self.__index = index
-        self.__output_ref = output
+        self.__output_ref = output_ref
         # TODO: Add spent property
         # TODO: Add PubSig feature
 

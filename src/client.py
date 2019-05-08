@@ -9,44 +9,40 @@ from blockchain.Output import Output
 import time
 
 def main():
-    blockchain = Blockchain()
-
-    transactions = [
+    txs = [
         CoinbaseTransaction()
     ]
 
-    block = GenesisBlock(transactions)
+    genesis_block = GenesisBlock(txs)
 
-    proof_of_work = ProofOfWork.run(block)
+    pow = ProofOfWork.run(genesis_block)
+    genesis_block.set_proof_of_work(pow)
+    genesis_block.set_hash(pow.get_hash())
+    genesis_block.set_timestamp(time.time())
 
-    block.set_proof_of_work(proof_of_work)
-    block.set_hash(proof_of_work.get_hash())
+    print(genesis_block)
+
+    txs1 = [
+        CoinbaseTransaction(),
+        Transaction(inputs=[Input(txs[0], 0, txs[0].get_output(index=0))], outputs=[Output(10)]),
+        Transaction(inputs=[Input(txs[0], 0, txs[0].get_output(index=0))], outputs=[Output(10)]),
+        Transaction(inputs=[Input(txs[0], 0, txs[0].get_output(index=0))], outputs=[Output(10)]),
+        Transaction(inputs=[Input(txs[0], 0, txs[0].get_output(index=0))], outputs=[Output(10)]),
+        Transaction(inputs=[Input(txs[0], 0, txs[0].get_output(index=0))], outputs=[Output(10)]),
+        Transaction(inputs=[Input(txs[0], 0, txs[0].get_output(index=0))], outputs=[Output(10)]),
+        Transaction(inputs=[Input(txs[0], 0, txs[0].get_output(index=0))], outputs=[Output(10)]),
+        Transaction(inputs=[Input(txs[0], 0, txs[0].get_output(index=0))], outputs=[Output(10)]),
+        Transaction(inputs=[Input(txs[0], 0, txs[0].get_output(index=0))], outputs=[Output(10)]),
+    ]
+    block = Block(txs1)
+
+    block.set_prev_hash(genesis_block.get_hash())
+    pow = ProofOfWork.run(block)
+    block.set_proof_of_work(pow)
+    block.set_hash(pow.get_hash())
     block.set_timestamp(time.time())
 
-    blockchain.add_block_to_chain(block)
-
     print(block)
-
-    print("next one")
-
-    txs = [
-        CoinbaseTransaction(),
-        Transaction(inputs=[Input(transactions[0], 0, transactions[0].get_output(index=0))],
-                    outputs=[Output(15)])
-    ]
-
-    block1 = Block(txs)
-    block1.set_prev_hash(blockchain.get_last_block().get_hash())
-
-    pow = ProofOfWork.run(block1)
-
-    block1.set_proof_of_work(pow)
-    block1.set_hash(pow.get_hash())
-    block1.set_timestamp(time.time())
-
-    blockchain.add_block_to_chain(block1)
-
-    print(block1)
 
     print("debug")
 

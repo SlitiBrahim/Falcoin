@@ -1,5 +1,6 @@
 from hashlib import sha256
 import json
+from blockchain.Transaction import Transaction
 
 class Block:
 
@@ -10,6 +11,7 @@ class Block:
         self._proof_of_work = None
         self._transactions = transactions if transactions is not None else []
         self._timestamp = None
+        self._merkle_root = self.generate_merkle_root()
 
     def get_hash(self):
         return self._hash
@@ -40,6 +42,7 @@ class Block:
 
     def set_transactions(self, transactions):
         self._transactions = transactions
+        self._merkle_root = Transaction.merkle_root(self._transactions)
 
     # TODO: Add add_transaction method who  check if transaction is already existing
 
@@ -48,6 +51,11 @@ class Block:
 
     def set_timestamp(self, timestamp):
         self._timestamp = timestamp
+
+    def generate_merkle_root(self):
+        self._merkle_root = Transaction.merkle_root(self._transactions)
+
+        return self._merkle_root
 
     def compute_hash(self, nonce = None):
         if self._prev_hash is None:
@@ -70,7 +78,8 @@ class Block:
             "prev_hash": self._prev_hash,
             "pow": self._proof_of_work.json_obj(),
             "transactions": [tx.json_obj() for tx in self._transactions],
-            "timestamp": self._timestamp
+            "timestamp": self._timestamp,
+            "merkle_root": self._merkle_root
         }
 
         return data

@@ -28,6 +28,7 @@ class Blockchain:
         return len(self.__chain)
 
     def add_block_to_chain(self, block):
+        # TODO: add verification that first block added is of type GenesisBlock
         index = self.get_chain_length()
         block.set_index(index)
 
