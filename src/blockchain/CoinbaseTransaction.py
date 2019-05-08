@@ -11,7 +11,7 @@ class CoinbaseTransaction(Transaction):
         super().__init__(inputs, outputs)
 
     def _calculate_fees(self):
-        return self.__fees
+        return self._fees
 
     @staticmethod
     def __generate_empty_input():

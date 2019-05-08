@@ -27,3 +27,12 @@ class Input:
         input_value = prev_tx_outputs[self.__index]
 
         return input_value
+
+    def json_obj(self):
+        data = {
+            "prev_tx": self.__prev_tx.get_hash() if not self.is_empty() else "0" * 64,
+            "index": self.__index,
+            "output_ref": self.__output_ref.json_obj() if self.__output_ref else None
+        }
+
+        return data

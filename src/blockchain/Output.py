@@ -6,3 +6,10 @@ class Output:
 
     def get_value(self):
         return self.__value
+
+    def json_obj(self):
+        data = {
+            "value": self.__value
+        }
+
+        return data

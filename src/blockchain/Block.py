@@ -59,6 +59,7 @@ class Block:
         # get nonce from parameter if issued otherwise get it from proof_of_work
         # allow to compute hash both by passing nonce parameter or by using the one from the block
         nonce_val = nonce if nonce is not None else self.__proof_of_work.get_nonce()
+
         key = self._prev_hash + transactions + str(nonce_val)
 
         return sha256(key.encode()).hexdigest()
