@@ -53,8 +53,7 @@ class Block:
         if self._prev_hash is None:
             raise Exception("block \"_prev_hash\" property cannot be None, it must be set.")
 
-        # TODO: replace it when Transaction Class is implemented
-        # transactions = json.dumps(self.__transactions).encode().decode("utf-8")
+        # TODO: replace it with merkle root value
         transactions = json.dumps([]).encode().decode("utf-8")
         # get nonce from parameter if issued otherwise get it from proof_of_work
         # allow to compute hash both by passing nonce parameter or by using the one from the block
