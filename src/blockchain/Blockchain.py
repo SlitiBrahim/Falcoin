@@ -1,4 +1,5 @@
 from blockchain.Block import Block
+from blockchain.GenesisBlock import GenesisBlock
 
 class Blockchain:
 
@@ -28,8 +29,11 @@ class Blockchain:
         return len(self.__chain)
 
     def add_block_to_chain(self, block):
-        # TODO: add verification that first block added is of type GenesisBlock
         index = self.get_chain_length()
+
+        if index == 0 and not isinstance(block, GenesisBlock):
+            raise Exception("First block added in the chain must be of type GenesisBlock")
+
         block.set_index(index)
 
         # check if block already exist in the chain
