@@ -85,7 +85,7 @@ class Transaction:
         if len(tx_hashes) == 1:
             # return the final hash
             return tx_hashes.pop()
-        # check if txs number is even (required for merkle root algorithm)
+        # > 1 so no infinite loop. check if txs number is even (required for merkle root algorithm)
         elif len(tx_hashes) > 1 and (len(tx_hashes) % 2) != 0:
             # duplicate last hash so txs number is even
             tx_hashes.append(tx_hashes[-1])
