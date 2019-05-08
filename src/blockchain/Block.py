@@ -61,13 +61,12 @@ class Block:
         if self._prev_hash is None:
             raise Exception("block \"_prev_hash\" property cannot be None, it must be set.")
 
-        # TODO: replace it with merkle root value
-        transactions = json.dumps([]).encode().decode("utf-8")
+        transactions_hash = self._merkle_root
         # get nonce from parameter if issued otherwise get it from proof_of_work
         # allow to compute hash both by passing nonce parameter or by using the one from the block
         nonce_val = nonce if nonce is not None else self._proof_of_work.get_nonce()
 
-        key = self._prev_hash + transactions + str(nonce_val)
+        key = self._prev_hash + transactions_hash + str(nonce_val)
 
         return sha256(key.encode()).hexdigest()
 
