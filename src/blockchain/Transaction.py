@@ -5,10 +5,11 @@ from hashlib import sha256
 
 class Transaction:
 
-    def __init__(self, inputs, outputs):
+    def __init__(self, inputs, outputs, fees = None):
         self._inputs = inputs
         self._outputs = outputs
-        self._fees = 0.0
+        # if fees arg is not passed calculate it dynamically
+        self._fees = float(fees) if fees is not None else self._calculate_fees()
         self._hash = self.compute_hash()
 
     def get_hash(self):
@@ -22,11 +23,6 @@ class Transaction:
 
     def get_output(self, index):
         return self._outputs[index]
-
-    def generate_fees(self):
-        self._fees = self._calculate_fees()
-
-        return self.get_fees_amount()
 
     def _calculate_fees(self):
         # get value of all inputs in a list
@@ -52,7 +48,7 @@ class Transaction:
         data = {
             "hash": self._hash,
             **self._get_data_obj(), # use unpack operator to include tx_data
-            "fees": self.generate_fees()
+            "fees": self.get_fees_amount()
         }
 
         return data

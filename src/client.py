@@ -25,7 +25,7 @@ def main():
     txs1 = [
         CoinbaseTransaction(),
         Transaction(inputs=[Input(txs[0], 0, txs[0].get_output(index=0))], outputs=[Output(10)]),
-        Transaction(inputs=[Input(txs[0], 0, txs[0].get_output(index=0))], outputs=[Output(10)]),
+        Transaction(inputs=[Input(txs[0], 0, txs[0].get_output(index=0))], outputs=[Output(10)], fees = 2.0),
         Transaction(inputs=[Input(txs[0], 0, txs[0].get_output(index=0))], outputs=[Output(10)]),
         Transaction(inputs=[Input(txs[0], 0, txs[0].get_output(index=0))], outputs=[Output(10)]),
         Transaction(inputs=[Input(txs[0], 0, txs[0].get_output(index=0))], outputs=[Output(10)]),
