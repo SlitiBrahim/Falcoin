@@ -15,8 +15,8 @@ class Input:
         return self.__index
 
     """Set referred output as spent"""
-    def make_output_ref_spent(self, output_ref):
-        output_ref.set_spent()
+    def make_output_ref_spent(self):
+        self.__output_ref.set_spent()
 
         return self.__output_ref
 
