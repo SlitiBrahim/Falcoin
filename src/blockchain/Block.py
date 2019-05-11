@@ -40,6 +40,13 @@ class Block:
     def get_transactions(self):
         return self._transactions
 
+    def get_transaction_by_hash(self, str_hash):
+        for tx in self._transactions:
+            if tx.get_hash() == str_hash:
+                return tx
+
+        return None
+
     def set_transactions(self, transactions):
         self._transactions = transactions
         self._merkle_root = Transaction.merkle_root(self._transactions)
