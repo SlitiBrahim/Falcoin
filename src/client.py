@@ -20,18 +20,8 @@ def main():
     genesis_block.set_hash(pow.get_hash())
     genesis_block.set_timestamp(time.time())
 
-    print(genesis_block)
-
     txs1 = [
         CoinbaseTransaction(),
-        Transaction(inputs=[Input(txs[0], 0, txs[0].get_output(index=0))], outputs=[Output(10)]),
-        Transaction(inputs=[Input(txs[0], 0, txs[0].get_output(index=0))], outputs=[Output(10)], fees = 2.0),
-        Transaction(inputs=[Input(txs[0], 0, txs[0].get_output(index=0))], outputs=[Output(10)]),
-        Transaction(inputs=[Input(txs[0], 0, txs[0].get_output(index=0))], outputs=[Output(10)]),
-        Transaction(inputs=[Input(txs[0], 0, txs[0].get_output(index=0))], outputs=[Output(10)]),
-        Transaction(inputs=[Input(txs[0], 0, txs[0].get_output(index=0))], outputs=[Output(10)]),
-        Transaction(inputs=[Input(txs[0], 0, txs[0].get_output(index=0))], outputs=[Output(10)]),
-        Transaction(inputs=[Input(txs[0], 0, txs[0].get_output(index=0))], outputs=[Output(10)]),
         Transaction(inputs=[Input(txs[0], 0, txs[0].get_output(index=0))], outputs=[Output(10)]),
     ]
     block = Block(txs1)
@@ -42,6 +32,8 @@ def main():
     block.set_proof_of_work(pow)
     block.set_hash(pow.get_hash())
     block.set_timestamp(time.time())
+
+    print(genesis_block)
 
     print(block)
 

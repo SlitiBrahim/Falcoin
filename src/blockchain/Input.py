@@ -6,7 +6,6 @@ class Input:
         self.__prev_tx = prev_tx
         self.__index = index
         self.__output_ref = output_ref
-        # TODO: Add spent property
         # TODO: Add PubSig feature
 
     def get_prev_tx(self):
@@ -14,6 +13,12 @@ class Input:
 
     def get_index(self):
         return self.__index
+
+    """Set referred output as spent"""
+    def make_output_ref_spent(self, output_ref):
+        output_ref.set_spent()
+
+        return self.__output_ref
 
     def get_output_ref(self):
         return self.__output_ref
