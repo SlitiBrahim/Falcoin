@@ -1,12 +1,13 @@
 import blockchain.utils as utils
+from blockchain import crypto
 
 class Input:
 
-    def __init__(self, prev_tx, index, output_ref = None):
+    def __init__(self, prev_tx, index, pubsig, output_ref = None):
         self.__prev_tx = prev_tx
         self.__index = index
         self.__output_ref = output_ref
-        # TODO: Add PubSig feature
+        self.__pubsig = pubsig
 
     def get_prev_tx(self):
         return self.__prev_tx
@@ -22,6 +23,15 @@ class Input:
 
     def get_output_ref(self):
         return self.__output_ref
+
+    """Check that output_ref could be unlocked.
+    output_ref's receiver must be the one who signed the current input"""
+    def can_unlock(self, data):
+        # get output_ref's receiver
+        txo_receiver_pubkey = self.__output_ref.get_pubkey()
+
+        # return True if the signature matches the outputs' public_key
+        return crypto.verify_signature(self.__pubsig, data, txo_receiver_pubkey)
 
     def is_empty(self):
         return self.__prev_tx is None and self.__index < 0
