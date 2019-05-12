@@ -4,9 +4,9 @@ from blockchain.Output import Output
 
 class CoinbaseTransaction(Transaction):
 
-    def __init__(self, output = None):
+    def __init__(self, output):
         inputs = [CoinbaseTransaction.__generate_empty_input()]
-        outputs = [output] if output else [CoinbaseTransaction.__generate_default_output()]
+        outputs = [output]
 
         super().__init__(inputs, outputs, None)
 
@@ -17,8 +17,8 @@ class CoinbaseTransaction(Transaction):
 
     @staticmethod
     def __generate_empty_input():
-        return Input(None, -1)
+        return Input(None, -1, None, None)
 
     @staticmethod
-    def __generate_default_output():
-        return Output(100)
+    def generate_default_output(pubkey):
+        return Output(100, pubkey)
