@@ -6,4 +6,3 @@ services:
       context: ./docker/app
     volumes:
       - .:/app
-    user: "1000"
