@@ -15,12 +15,6 @@ class Input:
     def get_index(self):
         return self.__index
 
-    """Set referred output as spent"""
-    def make_output_ref_spent(self):
-        self.__output_ref.set_spent()
-
-        return self.__output_ref
-
     def get_output_ref(self):
         return self.__output_ref
 
@@ -49,7 +43,8 @@ class Input:
         data = {
             "prev_tx": self.__prev_tx.get_hash() if not self.is_empty() else utils.zeros_hash(),
             "index": self.__index,
-            "output_ref": self.__output_ref.json_obj() if self.__output_ref else None
+            "output_ref": self.__output_ref.json_obj() if self.__output_ref else None,
+            "pubsig": self.__pubsig
         }
 
         return data
