@@ -19,45 +19,63 @@ def main():
     # else:
     #     print("cannot be unlocked")
 
-    msg = "random data"
-    brahim_private_key, brahim_public_key = crypto.generate_key_pair()
-    brahim_sig = crypto.sign_message(msg, brahim_private_key)
+    # msg = "random data"
+    # brahim_private_key, brahim_public_key = crypto.generate_key_pair()
+    # brahim_sig = crypto.sign_message(msg, brahim_private_key)
+    #
+    # yanis_private_key, yanis_public_key = crypto.generate_key_pair()
+    # yanis_sig = crypto.sign_message(msg, yanis_private_key)
+    #
+    # hacker_private_key, hacker_public_key = crypto.generate_key_pair()
+    # hacker_sig = crypto.sign_message(msg, hacker_private_key)
+    #
+    # _, miner_public_key = crypto.generate_key_pair()
+    #
+    # txs = [
+    #     CoinbaseTransaction(CoinbaseTransaction.generate_default_output(brahim_public_key))
+    # ]
+    #
+    # genesis_block = GenesisBlock(txs)
+    #
+    # pow = ProofOfWork.run(genesis_block)
+    # genesis_block.set_proof_of_work(pow)
+    # genesis_block.set_hash(pow.get_hash())
+    # genesis_block.set_timestamp(time.time())
+    #
+    # txs1 = [
+    #     CoinbaseTransaction(CoinbaseTransaction.generate_default_output(miner_public_key)),
+    #     Transaction(inputs=[Input(txs[0], 0, brahim_sig ,txs[0].get_output(index=0))], outputs=[Output(10, yanis_public_key)], fees=1.0),
+    # ]
+    # block = Block(txs1)
+    #
+    # block.set_index(1)
+    # block.set_prev_hash(genesis_block.get_hash())
+    # pow = ProofOfWork.run(block)
+    # block.set_proof_of_work(pow)
+    # block.set_hash(pow.get_hash())
+    # block.set_timestamp(time.time())
+    #
+    # print(genesis_block)
+    #
+    # print(block)
+
+
+    my_private_key, my_public_key = crypto.generate_key_pair()
+    my_sig = crypto.sign_message("random data", my_private_key)
 
     yanis_private_key, yanis_public_key = crypto.generate_key_pair()
-    yanis_sig = crypto.sign_message(msg, yanis_private_key)
-
-    hacker_private_key, hacker_public_key = crypto.generate_key_pair()
-    hacker_sig = crypto.sign_message(msg, hacker_private_key)
-
-    _, miner_public_key = crypto.generate_key_pair()
+    yanis_sig = crypto.sign_message("random data", yanis_private_key)
 
     txs = [
-        CoinbaseTransaction(CoinbaseTransaction.generate_default_output(brahim_public_key))
+        CoinbaseTransaction(CoinbaseTransaction.generate_default_output(yanis_public_key))
     ]
-
-    genesis_block = GenesisBlock(txs)
-
-    pow = ProofOfWork.run(genesis_block)
-    genesis_block.set_proof_of_work(pow)
-    genesis_block.set_hash(pow.get_hash())
-    genesis_block.set_timestamp(time.time())
 
     txs1 = [
-        CoinbaseTransaction(CoinbaseTransaction.generate_default_output(miner_public_key)),
-        Transaction(inputs=[Input(txs[0], 0, brahim_sig ,txs[0].get_output(index=0))], outputs=[Output(10, yanis_public_key)], fees=1.0),
+        CoinbaseTransaction(CoinbaseTransaction.generate_default_output(my_public_key)),
+        Transaction(inputs=[Input(txs[0], 0, yanis_sig, txs[0].get_output(index=0))], outputs=[Output(10, my_public_key)], fees=1.0),
     ]
-    block = Block(txs1)
 
-    block.set_index(1)
-    block.set_prev_hash(genesis_block.get_hash())
-    pow = ProofOfWork.run(block)
-    block.set_proof_of_work(pow)
-    block.set_hash(pow.get_hash())
-    block.set_timestamp(time.time())
-
-    print(genesis_block)
-
-    print(block)
+    valid_txs = Transaction.extract_valid_transactions(txs1)
 
     print("debug")
 

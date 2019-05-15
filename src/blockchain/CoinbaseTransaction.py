@@ -11,7 +11,7 @@ class CoinbaseTransaction(Transaction):
         super().__init__(inputs, outputs, None)
 
     # used to return fees amount on CoinbaseTransaction creation
-    def _calculate_fees(self):
+    def calculate_fees(self):
         # 0.0 since a coinbase tx doesn't have fees
         return 0.0
 

@@ -1,5 +1,6 @@
 import blockchain.utils as utils
 from blockchain import crypto
+import math
 
 class Input:
 
@@ -48,3 +49,9 @@ class Input:
         }
 
         return data
+
+    @staticmethod
+    def total_input_values(inputs):
+        tx_input_values = [input.get_output_ref().get_value() for input in inputs]
+
+        return math.fsum(tx_input_values)
