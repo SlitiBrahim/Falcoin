@@ -11,7 +11,7 @@ class Transaction:
         self._inputs = inputs
         self._outputs = outputs
         # if fees arg is not passed calculate it dynamically
-        self._fees = float(fees) if fees is not None else self._calculate_fees()
+        self._fees = float(fees) if fees is not None else self.calculate_fees()
         self._hash = self.compute_hash()
 
     def get_hash(self):
