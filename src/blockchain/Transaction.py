@@ -117,7 +117,7 @@ class Transaction:
         # return false if fees is set as a number greater than what's remaining after inputs - outputs
         return (tx_input_values - tx_output_values) - tx.get_fees_amount() >= 0
 
-    def is_valid(self, referenced_output_hashes):
+    def is_valid(self, referenced_output_hashes, blockchain):
         def invalid_tx():
             return False, []
 
@@ -145,15 +145,13 @@ class Transaction:
         # ===== 4th verification: check that referred output belongs to input owners
         # (not using an output which does not belong to the input owner)
         # if not all inputs valid
-        if not all([input.is_valid() for input in self.get_inputs()]):
+        if not all([input.is_valid(blockchain) for input in self.get_inputs()]):
             return invalid_tx()
-
-        # TODO: Check if output is already referenced in blockchain
 
         return True, txo_hashes
 
     @staticmethod
-    def extract_valid_transactions(transactions):
+    def extract_valid_transactions(transactions, blockchain):
         # store valid txs as dict: hash, Transaction
         valid_txs = {}
         # output hashes referenced in that transactions list
@@ -164,7 +162,7 @@ class Transaction:
             if tx.get_hash() in list(valid_txs.keys()):
                 continue
 
-            is_valid_tx, txo_hashes = tx.is_valid(referenced_output_hashes)
+            is_valid_tx, txo_hashes = tx.is_valid(referenced_output_hashes, blockchain)
             if is_valid_tx:
                 # add this tx as a valid transaction
                 valid_txs[tx.get_hash()] = tx

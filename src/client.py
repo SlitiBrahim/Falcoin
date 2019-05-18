@@ -68,7 +68,7 @@ def main():
         CoinbaseTransaction(CoinbaseTransaction.generate_default_output(yanis_public_key))
     ]
 
-    genesis_block = GenesisBlock(Transaction.extract_valid_transactions(txs))
+    genesis_block = GenesisBlock(Transaction.extract_valid_transactions(txs, blockchain))
     pow = ProofOfWork.run(genesis_block)
     genesis_block.set_proof_of_work(pow)
     genesis_block.set_hash(pow.get_hash())
@@ -84,7 +84,7 @@ def main():
         Transaction(inputs=[input], outputs=[Output(10, my_public_key)], fees=0.0),
     ]
 
-    block1 = Block(Transaction.extract_valid_transactions(txs1))
+    block1 = Block(Transaction.extract_valid_transactions(txs1, blockchain))
     block1.set_index(1)
     block1.set_prev_hash(genesis_block.get_hash())
     pow = ProofOfWork.run(block1)
@@ -102,7 +102,7 @@ def main():
         Transaction(inputs=[input], outputs=[Output(10, yanis_public_key)], fees=0.0),
     ]
 
-    block2 = Block(Transaction.extract_valid_transactions(txs2))
+    block2 = Block(Transaction.extract_valid_transactions(txs2, blockchain))
     block2.set_index(1)
     block2.set_prev_hash(block1.get_hash())
     pow = ProofOfWork.run(block2)
@@ -112,13 +112,23 @@ def main():
 
     blockchain.add_block_to_chain(block2)
 
+    txs3 = [
+        CoinbaseTransaction(CoinbaseTransaction.generate_default_output(yanis_public_key)),
+        Transaction(inputs=[input], outputs=[Output(10, yanis_public_key)], fees=0.0),
+    ]
+
+    block3 = Block(Transaction.extract_valid_transactions(txs3, blockchain))
+    block3.set_index(3)
+    block3.set_prev_hash(block1.get_hash())
+    pow = ProofOfWork.run(block3)
+    block3.set_proof_of_work(pow)
+    block3.set_hash(pow.get_hash())
+    block3.set_timestamp(time.time())
+
     print(genesis_block)
     print(block1)
     print(block2)
-
-    # valid = txs1[1].get_inputs()[0].is_valid()
-
-    valid_txs = Transaction.extract_valid_transactions(txs1)
+    print(block3)
 
     print("debug")
 

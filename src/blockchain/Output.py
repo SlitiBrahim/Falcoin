@@ -32,7 +32,7 @@ class Output:
 
         return hash
 
-    """Returns tx_input and its block if output is referenced otherwise will return None"""
+    """Returns tx_input and its block if output is referenced, otherwise will return None"""
     def find_reference(self, output_block, blockchain):
         # start looking for reference from next block after output's block
         # avoid iterating on blockchain from first block
@@ -42,10 +42,11 @@ class Output:
         for block in blockchain.get_chain(start=start_index):
             for tx in block.get_transactions():
                 for tx_input in tx.get_inputs():
-                    # if input's output_ref is equal to current output instance
-                    if self.hash() == tx_input.get_output_ref().hash():
-                        # return input that refers current output and its block
-                        return tx_input, block
+                    if not tx_input.is_empty():
+                        # if input's output_ref is equal to current output instance
+                        if self.hash() == tx_input.get_output_ref().hash():
+                            # return input that refers current output and its block
+                            return tx_input, block
 
         # output not referred in any input
         return None

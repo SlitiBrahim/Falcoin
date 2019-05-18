@@ -23,9 +23,21 @@ class Input:
     def get_output_ref(self):
         return self.__output_ref
 
+    def is_output_spent(self, blockchain):
+        output = self.__output_ref
+        output_block = blockchain.find_output_block(output)
+
+        if output.find_reference(output_block, blockchain) is not None:
+            return True
+
+        return False
+
     """Check that output_ref could be unlocked.
     output_ref's receiver must be the one who signed the current input"""
-    def can_unlock(self, data):
+    def can_unlock(self, data, blockchain):
+        if self.is_output_spent(blockchain):
+            return False
+
         # get output_ref's receiver
         txo_receiver_pubkey = self.__output_ref.get_pubkey()
 
@@ -56,14 +68,14 @@ class Input:
 
         return data
 
-    def is_valid(self):
+    def is_valid(self, blockchain):
         # pubsig was not set
         if self.__pubsig is None:
             return False
 
         data = self.dump_json_obj(with_pubsig=False)
         # check that referred output belongs to the input owner
-        if not self.can_unlock(data):
+        if not self.can_unlock(data, blockchain):
             return False
 
         return True

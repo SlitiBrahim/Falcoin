@@ -23,7 +23,7 @@ class CoinbaseTransaction(Transaction):
     def generate_default_output(pubkey):
         return Output(100, pubkey)
 
-    def is_valid(self, _):
+    def is_valid(self, *_):
         # don't use passed argument, just to be in adequacy with Transaction.is_valid method
         # return empty list for txo hashes (used in Transaction class)
         return self._fees >= 0, []
