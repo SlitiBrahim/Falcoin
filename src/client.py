@@ -76,6 +76,8 @@ def main():
         Transaction(inputs=[input], outputs=[Output(10, my_public_key)], fees=0.0),
     ]
 
+    valid = txs1[1].get_inputs()[0].is_valid()
+
     valid_txs = Transaction.extract_valid_transactions(txs1)
 
     print("debug")

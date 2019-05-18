@@ -142,7 +142,11 @@ class Transaction:
         if self.get_total_inputs() - self.get_total_outputs() - self.get_fees_amount() < 0.0:
             return invalid_tx()
 
-        # TODO: Check if inputs refer to outputs that belongs tx sender
+        # ===== 4th verification: check that referred output belongs to input owners
+        # (not using an output which does not belong to the input owner)
+        # if not all inputs valid
+        if not all([input.is_valid() for input in self.get_inputs()]):
+            return invalid_tx()
 
         # TODO: Check if output is already referenced in blockchain
 

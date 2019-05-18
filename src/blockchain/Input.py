@@ -56,9 +56,27 @@ class Input:
 
         return data
 
+    def is_valid(self):
+        # pubsig was not set
+        if self.__pubsig is None:
+            return False
+
+        pubkey = self.__output_ref.get_pubkey()
+        msg = self.dump_json_obj(with_pubsig=False)
+        # check that referred output belongs to the input owner
+        if not crypto.verify_signature(self.__pubsig, msg, pubkey):
+            return False
+
+        return True
+
+    def dump_json_obj(self, with_pubsig=True):
+        data = json.dumps(self.json_obj(with_pubsig))
+
+        return data
+
     @staticmethod
     def generate_pubsig(input, private_key):
-        data = json.dumps(input.json_obj(with_pubsig=False))
+        data = input.dump_json_obj(with_pubsig=False)
         sig = crypto.sign_message(data, private_key)
 
         return sig
