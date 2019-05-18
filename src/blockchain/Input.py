@@ -61,10 +61,9 @@ class Input:
         if self.__pubsig is None:
             return False
 
-        pubkey = self.__output_ref.get_pubkey()
-        msg = self.dump_json_obj(with_pubsig=False)
+        data = self.dump_json_obj(with_pubsig=False)
         # check that referred output belongs to the input owner
-        if not crypto.verify_signature(self.__pubsig, msg, pubkey):
+        if not self.can_unlock(data):
             return False
 
         return True
