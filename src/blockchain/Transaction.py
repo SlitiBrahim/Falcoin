@@ -52,8 +52,8 @@ class Transaction:
 
         return data
 
-    """Returns object as dictionary"""
     def json_obj(self):
+        """Returns object as dictionary"""
         data = {
             "hash": self._hash,
             **self._get_data_obj(), # use unpack operator to include tx_data

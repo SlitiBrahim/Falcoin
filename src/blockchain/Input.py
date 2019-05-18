@@ -32,9 +32,11 @@ class Input:
 
         return False
 
-    """Check that output_ref could be unlocked.
-    output_ref's receiver must be the one who signed the current input"""
     def can_unlock(self, data, blockchain):
+        """Check that output_ref could be unlocked.
+        output_ref's receiver must be the one who signed the current input
+        """
+
         if self.is_output_spent(blockchain):
             return False
 

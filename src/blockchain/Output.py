@@ -25,15 +25,16 @@ class Output:
 
         return data
 
-    """Returns hash of output"""
     def hash(self):
+        """Returns hash of output"""
         data = json.dumps(self.json_obj())
         hash = sha256(data.encode()).hexdigest()
 
         return hash
 
-    """Returns tx_input and its block if output is referenced, otherwise will return None"""
     def find_reference(self, output_block, blockchain):
+        """Returns tx_input and its block if output is referenced, otherwise will return None"""
+
         # start looking for reference from next block after output's block
         # avoid iterating on blockchain from first block
         start_index = output_block.get_index() + 1
