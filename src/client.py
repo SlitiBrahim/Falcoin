@@ -72,7 +72,7 @@ def main():
 
     txs1 = [
         CoinbaseTransaction(CoinbaseTransaction.generate_default_output(my_public_key)),
-        Transaction(inputs=[Input(txs[0], 0, yanis_sig, txs[0].get_output(index=0))], outputs=[Output(10, my_public_key)], fees=1.0),
+        Transaction(inputs=[Input(txs[0], 0, yanis_sig, txs[0].get_output(index=0))], outputs=[Output(10, my_public_key)], fees=0.0),
     ]
 
     valid_txs = Transaction.extract_valid_transactions(txs1)

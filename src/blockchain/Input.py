@@ -55,3 +55,16 @@ class Input:
         tx_input_values = [input.get_output_ref().get_value() for input in inputs]
 
         return math.fsum(tx_input_values)
+
+    @staticmethod
+    def has_duplicate_output_refs(inputs):
+        output_ref_hashes = []
+
+        for input in inputs:
+            output_ref_hash = input.get_output_ref().hash()
+            if output_ref_hash in output_ref_hashes:
+                return True
+            else:
+                output_ref_hashes.append(output_ref_hash)
+
+        return False

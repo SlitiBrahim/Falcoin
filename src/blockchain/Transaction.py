@@ -26,13 +26,20 @@ class Transaction:
     def get_output(self, index):
         return self._outputs[index]
 
-    def calculate_fees(self):
+    def get_total_inputs(self):
         # get value of all inputs in a list
         tx_input_values = list(map(lambda i: i.get_output_ref().get_value(), self._inputs))
+
+        return math.fsum(tx_input_values)
+
+    def get_total_outputs(self):
         # get all values from outputs
         tx_output_values = list(map(lambda o: o.get_value(), self._outputs))
 
-        return math.fsum(tx_input_values) - math.fsum(tx_output_values)
+        return math.fsum(tx_output_values)
+
+    def calculate_fees(self):
+        return self.get_total_inputs() - self.get_total_outputs()
 
     def get_fees_amount(self):
         return self._fees
@@ -99,19 +106,6 @@ class Transaction:
         return Transaction.merkle_root(tx_hash_pairs)
 
     @staticmethod
-    def __has_duplicate_output_refs(inputs):
-        output_ref_hashes = []
-
-        for input in inputs:
-            output_ref_hash = input.get_output_ref().hash()
-            if output_ref_hash in output_ref_hashes:
-                return True
-            else:
-                output_ref_hashes.append(output_ref_hash)
-
-        return False
-
-    @staticmethod
     def __is_valid_fees(tx):
         # invalid fees if set as negative number
         if tx.get_fees_amount() < 0:
@@ -122,6 +116,37 @@ class Transaction:
 
         # return false if fees is set as a number greater than what's remaining after inputs - outputs
         return (tx_input_values - tx_output_values) - tx.get_fees_amount() >= 0
+
+    def is_valid(self, referenced_output_hashes):
+        def invalid_tx():
+            return False, []
+
+        txo_hashes = []
+        for tx_input in self.get_inputs():
+            txo_hashes.append(tx_input.get_output_ref().hash())
+
+        # ===== 1st verification: outputs already referenced by a previous tx in that candidate block
+        # True if any of the current tx output ref is already referenced by a previous tx
+        any_output_already_referenced = any([txo_hash in referenced_output_hashes for txo_hash in txo_hashes])
+
+        if any_output_already_referenced:
+            # invalid tx since its output refs are also referenced in another tx for current candidate block
+            # prevent double spending
+            return invalid_tx()
+
+        # ===== 2nd verification: same output used as inputs more than once
+        if Input.has_duplicate_output_refs(self._inputs):
+            return invalid_tx()
+
+        # ===== 3rd verification: check that inputs are >= than outputs and if fees is set, check that is valid
+        if self.get_total_inputs() - self.get_total_outputs() - self.get_fees_amount() < 0.0:
+            return invalid_tx()
+
+        # TODO: Check if inputs refer to outputs that belongs tx sender
+
+        # TODO: Check if output is already referenced in blockchain
+
+        return True, txo_hashes
 
     @staticmethod
     def extract_valid_transactions(transactions):
@@ -135,46 +160,11 @@ class Transaction:
             if tx.get_hash() in list(valid_txs.keys()):
                 continue
 
-            # TODO: Remove this, just a pragmatic solution for Parent/Child class import problem
-            from blockchain.CoinbaseTransaction import CoinbaseTransaction
-
-            if isinstance(tx, CoinbaseTransaction):
-                if tx.get_fees_amount() >= 0.0:
-                    continue
-
-                # make coinbase tx as valid. No need to check output refs since there is no one
+            is_valid_tx, txo_hashes = tx.is_valid(referenced_output_hashes)
+            if is_valid_tx:
+                # add this tx as a valid transaction
                 valid_txs[tx.get_hash()] = tx
-                continue
-
-            # same output ref used in more than one input
-            if Transaction.__has_duplicate_output_refs(inputs=tx.get_inputs()):
-                continue
-
-            # list containing current transaction output ref hashes
-            txo_hashes = []
-            for tx_input in tx.get_inputs():
-                txo_hashes.append(tx_input.get_output_ref().hash())
-
-            def are_outputs_referenced_in(output_hashes, references):
-                for output_hash in output_hashes:
-                    if output_hash in references:
-                        return True
-
-                return False
-
-            # check if current tx output refs are already referenced by a previous tx
-            if are_outputs_referenced_in(txo_hashes, referenced_output_hashes):
-                # ignore tx since its output refs are also referenced in another tx for current candidate block
-                # prevent double spending
-                continue
-
-            # TODO: Check fees
-
-            # TODO: Check if output is already referenced in blockchain
-
-            # finally add this tx as a valid transaction
-            valid_txs[tx.get_hash()] = tx
-            # add valid tx's output refs in the referenced outputs' list
-            referenced_output_hashes.extend(txo_hashes)
+                # add valid tx's output refs in the referenced outputs' list
+                referenced_output_hashes.extend(txo_hashes)
 
         return list(valid_txs.values())
