@@ -17,7 +17,7 @@ class CoinbaseTransaction(Transaction):
 
     @staticmethod
     def __generate_empty_input():
-        return Input(None, -1, None, None)
+        return Input(None, -1, None)
 
     @staticmethod
     def generate_default_output(pubkey):

@@ -1,20 +1,24 @@
 import blockchain.utils as utils
 from blockchain import crypto
 import math
+import json
 
 class Input:
 
-    def __init__(self, prev_tx, index, pubsig, output_ref = None):
+    def __init__(self, prev_tx, index, output_ref = None):
         self.__prev_tx = prev_tx
         self.__index = index
         self.__output_ref = output_ref
-        self.__pubsig = pubsig
+        self.__pubsig = None
 
     def get_prev_tx(self):
         return self.__prev_tx
 
     def get_index(self):
         return self.__index
+
+    def set_pubsig(self, pubsig):
+        self.__pubsig = pubsig
 
     def get_output_ref(self):
         return self.__output_ref
@@ -40,15 +44,24 @@ class Input:
 
         return input_value
 
-    def json_obj(self):
+    def json_obj(self, with_pubsig=True):
         data = {
             "prev_tx": self.__prev_tx.get_hash() if not self.is_empty() else utils.zeros_hash(),
             "index": self.__index,
             "output_ref": self.__output_ref.json_obj() if self.__output_ref else None,
-            "pubsig": self.__pubsig
         }
 
+        if with_pubsig:
+            data["pubsig"] = self.__pubsig
+
         return data
+
+    @staticmethod
+    def generate_pubsig(input, private_key):
+        data = json.dumps(input.json_obj(with_pubsig=False))
+        sig = crypto.sign_message(data, private_key)
+
+        return sig
 
     @staticmethod
     def total_input_values(inputs):
