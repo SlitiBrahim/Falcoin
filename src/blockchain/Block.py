@@ -90,6 +90,6 @@ class Block:
 
         return data
 
-    """Prints object as a formatted json"""
     def __str__(self):
+        """Prints object as a formatted json"""
         return json.dumps(self.json_obj(), indent=4)
