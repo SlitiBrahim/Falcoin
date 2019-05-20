@@ -1,5 +1,5 @@
-from blockchain.Block import Block
-from blockchain.GenesisBlock import GenesisBlock
+from .Block import Block
+from .GenesisBlock import GenesisBlock
 
 class Blockchain:
 

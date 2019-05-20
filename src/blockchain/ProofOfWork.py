@@ -72,3 +72,12 @@ class ProofOfWork:
         }
 
         return data
+
+    @staticmethod
+    def deserialize(dict):
+        pow = ProofOfWork()
+        pow.set_target(dict['target'])
+        pow.set_nonce(dict['nonce'])
+        pow.set_hash(dict['hash'])
+
+        return pow

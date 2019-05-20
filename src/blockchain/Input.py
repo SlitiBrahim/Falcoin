@@ -1,5 +1,6 @@
 import blockchain.utils as utils
 from blockchain import crypto
+from blockchain import Output
 import math
 import json
 
@@ -69,6 +70,22 @@ class Input:
             data["pubsig"] = self.__pubsig
 
         return data
+
+    @staticmethod
+    def deserialize(dict):
+        # TODO: change to Transaction object
+        prev_tx = dict['prev_tx']
+        index = dict['index']
+
+        if dict['output_ref'] is not None:
+            output_ref = Output.deserialize(dict['output_ref'])
+        else:
+            output_ref = None
+
+        input = Input(prev_tx, index, output_ref)
+        input.set_pubsig(dict['pubsig'])
+
+        return input
 
     def is_valid(self, blockchain):
         # pubsig was not set

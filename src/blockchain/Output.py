@@ -25,6 +25,13 @@ class Output:
 
         return data
 
+    @staticmethod
+    def deserialize(dict):
+        value = dict['value']
+        pubkey = dict['pubkey']
+
+        return Output(value, pubkey)
+
     def hash(self):
         """Returns hash of output"""
         data = json.dumps(self.json_obj())

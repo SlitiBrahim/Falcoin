@@ -8,7 +8,9 @@ from blockchain import Input
 from blockchain import Output
 from blockchain import crypto
 from blockchain import utils
+from db import Repository, Hydrator
 import time
+import os
 
 def main():
     blockchain = Blockchain()
@@ -79,10 +81,17 @@ def main():
 
     blockchain.add_block_to_chain(block3)
 
-    print(genesis_block)
-    print(block1)
-    print(block2)
-    print(block3)
+    # ========= DB =========
+
+    abs_db_path = os.path.abspath('../db/blockchain.db')
+    repository = Repository()
+    repository.connect_to_db(abs_db_path)
+
+    repository.insert(block3)
+
+    block_docs = repository.get_all_docs()
+
+    my_block = Hydrator.hydrate_block(block_docs[0])
 
     print("debug")
 

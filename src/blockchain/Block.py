@@ -1,6 +1,7 @@
 from hashlib import sha256
 import json
-from blockchain.Transaction import Transaction
+from .Transaction import Transaction
+from .ProofOfWork import ProofOfWork
 
 class Block:
 
@@ -64,6 +65,9 @@ class Block:
 
         return self._merkle_root
 
+    def set_merkle_root(self, merkle_root):
+        self._merkle_root = merkle_root
+
     def compute_hash(self, nonce = None):
         if self._prev_hash is None:
             raise Exception("block \"_prev_hash\" property cannot be None, it must be set.")
@@ -89,6 +93,19 @@ class Block:
         }
 
         return data
+
+    @staticmethod
+    def deserialize(dict):
+        txs = [Transaction.deserialize(s_tx) for s_tx in dict['transactions']]
+        block = Block(txs)
+        block.set_hash(dict['hash'])
+        block.set_index(dict['index'])
+        block.set_prev_hash(dict['prev_hash'])
+        block.set_proof_of_work(ProofOfWork.deserialize(dict['pow']))
+        block.set_timestamp(dict['timestamp'])
+        block.set_merkle_root(dict['merkle_root'])
+
+        return block
 
     def __str__(self):
         """Prints object as a formatted json"""

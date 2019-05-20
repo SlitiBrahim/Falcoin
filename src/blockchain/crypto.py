@@ -9,7 +9,7 @@ def generate_private_key():
     random_generator = Crypto.Random.new().read
     private_key = RSA.generate(1024, random_generator)
 
-    return private_key
+    return private_key.publickey().decode()
 
 def generate_key_pair():
     private_key = generate_private_key()

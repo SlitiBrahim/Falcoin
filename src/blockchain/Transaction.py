@@ -2,8 +2,8 @@ import math
 import json
 import time
 from hashlib import sha256
-from blockchain.Input import Input
-from blockchain.Output import Output
+from .Input import Input
+from .Output import Output
 
 class Transaction:
 
@@ -16,6 +16,9 @@ class Transaction:
 
     def get_hash(self):
         return self._hash
+
+    def set_hash(self, str_hash):
+        self._hash = str_hash
 
     def get_inputs(self):
         return self._inputs
@@ -61,6 +64,16 @@ class Transaction:
         }
 
         return data
+
+    @staticmethod
+    def deserialize(dict):
+        tx_i = [Input.deserialize(s_txi) for s_txi in dict['inputs']]
+        tx_o = [Output.deserialize(s_txo) for s_txo in dict['outputs']]
+        fees = dict['fees']
+        tx = Transaction(tx_i, tx_o, fees)
+        tx.set_hash(dict['hash'])
+
+        return tx
 
     def compute_hash(self):
         # get tx data object (dictionary) of current instance and convert it to str
@@ -170,3 +183,13 @@ class Transaction:
                 referenced_output_hashes.extend(txo_hashes)
 
         return list(valid_txs.values())
+
+    @staticmethod
+    def get_tx_by_hash(str_hash, blockchain):
+        # TODO: Check for merkle_tree
+        for block in blockchain.get_chain():
+            for tx in block.get_transactions():
+                if str_hash == tx.get_hash():
+                    return tx
+
+        return None
