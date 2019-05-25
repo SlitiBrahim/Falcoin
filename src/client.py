@@ -88,11 +88,10 @@ def main():
     repository = Repository()
     repository.connect_to_db(abs_db_path)
 
-    repository.insert(block3)
+    # repository.insert(genesis_block)
 
     block_docs = repository.get_all_docs()
-
-    my_block = Hydrator.hydrate_block(block_docs[0])
+    block_objs = list(map(lambda doc: Hydrator.hydrate_block(doc), block_docs))
 
     print("debug")
 

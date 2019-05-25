@@ -65,6 +65,9 @@ class Block:
 
         return self._merkle_root
 
+    def get_merkle_root(self):
+        return self._merkle_root
+
     def set_merkle_root(self, merkle_root):
         self._merkle_root = merkle_root
 
