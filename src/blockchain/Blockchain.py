@@ -66,3 +66,16 @@ class Blockchain:
 
         # block not found
         return None
+
+    def find_output_block(self, output):
+        """Retrieve a block in the chain by an output"""
+
+        output_hash = output.hash()
+        for block in self.__chain:
+            for tx in block.get_transactions():
+                for tx_output in tx.get_outputs():
+                    if tx_output.hash() == output_hash:
+                        return block
+
+        # block not found
+        return None
