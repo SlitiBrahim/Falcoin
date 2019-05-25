@@ -1,6 +1,6 @@
 import blockchain.utils as utils
 from blockchain import crypto
-from blockchain import Output
+from .Output import Output
 import math
 import json
 
