@@ -7,7 +7,7 @@ import json
 class Input:
 
     def __init__(self, prev_tx, index, output_ref = None):
-        self.__prev_tx = prev_tx
+        self.__prev_tx = prev_tx if not None else utils.zeros_hash()
         self.__index = index
         self.__output_ref = output_ref
         self.__pubsig = None
@@ -58,7 +58,7 @@ class Input:
 
     def json_obj(self, with_pubsig=True):
         data = {
-            "prev_tx": self.__prev_tx.get_hash() if not self.is_empty() else utils.zeros_hash(),
+            "prev_tx": self.__prev_tx,
             "index": self.__index,
             "output_ref": self.__output_ref.json_obj() if self.__output_ref else None,
         }
@@ -70,7 +70,6 @@ class Input:
 
     @staticmethod
     def deserialize(dict):
-        # TODO: change to Transaction object
         prev_tx = dict['prev_tx']
         index = dict['index']
 

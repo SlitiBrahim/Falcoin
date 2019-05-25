@@ -8,7 +8,8 @@ from blockchain import Input
 from blockchain import Output
 from blockchain import crypto
 from blockchain import utils
-from db import Repository, Hydrator
+from db import Hydrator
+from db import Repository
 import time
 import os
 
@@ -30,7 +31,7 @@ def main():
 
     blockchain.add_block_to_chain(genesis_block)
 
-    input = Input(txs[0], 0, txs[0].get_output(index=0))
+    input = Input(txs[0].get_hash(), 0, txs[0].get_output(index=0))
     input.set_pubsig(Input.generate_pubsig(input, yanis_private_key))
 
     txs1 = [
@@ -48,7 +49,7 @@ def main():
 
     blockchain.add_block_to_chain(block1)
 
-    input = Input(txs1[1], 0, txs1[1].get_output(index=0))
+    input = Input(txs1[1].get_hash(), 0, txs1[1].get_output(index=0))
     input.set_pubsig(Input.generate_pubsig(input, my_private_key))
 
     txs2 = [
