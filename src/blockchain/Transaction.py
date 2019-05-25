@@ -47,6 +47,9 @@ class Transaction:
     def get_fees_amount(self):
         return self._fees
 
+    def set_fees(self, fees):
+        self._fees = fees
+
     def _get_data_obj(self):
         data = {
             "inputs": [i.json_obj() for i in self._inputs],

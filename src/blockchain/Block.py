@@ -1,6 +1,7 @@
 from hashlib import sha256
 import json
 from .Transaction import Transaction
+from .CoinbaseTransaction import CoinbaseTransaction
 from .ProofOfWork import ProofOfWork
 
 class Block:
@@ -99,7 +100,18 @@ class Block:
 
     @staticmethod
     def deserialize(dict):
-        txs = [Transaction.deserialize(s_tx) for s_tx in dict['transactions']]
+        # deserialize transactions
+        txs = []
+        # loop through transactions and get index, transaction (dict)
+        for index, s_tx in enumerate(dict['transactions']):
+            # if first tx in txs so it's a CoinbaseTransaction
+            if index == 0:
+                tx = CoinbaseTransaction.deserialize(s_tx)
+            else:
+                tx = Transaction.deserialize(s_tx)
+
+            txs.append(tx)
+
         block = Block(txs)
         block.set_hash(dict['hash'])
         block.set_index(dict['index'])
