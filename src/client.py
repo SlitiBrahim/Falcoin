@@ -88,7 +88,8 @@ def main():
     repository = Repository()
     repository.connect_to_db(abs_db_path)
 
-    # repository.add(block2)
+    # repository.add(block1)
+    repository.db_sync(blockchain)
 
     block_docs = repository.get_all_docs()
     block_objs = list(map(lambda doc: Hydrator.hydrate_block(doc), block_docs))
