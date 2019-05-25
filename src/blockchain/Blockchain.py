@@ -19,6 +19,19 @@ class Blockchain:
 
         return self.__chain[start:]
 
+    def set_chain(self, blocks):
+        """Allow to set chain with blocks got from local db"""
+
+        if len(self.get_chain()) > 0:
+            raise Exception("Blockchain already contains blocks, setting chain "
+                            "is only allowed for empty blockchain")
+
+        # check if all elements are Block objects
+        valid = all(list(map(lambda b: isinstance(b, Block), blocks)))
+
+        if valid:
+            self.__chain = blocks
+
     def get_last_block(self):
         if self.get_chain_length() == 0:
             return None
