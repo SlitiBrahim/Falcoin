@@ -52,13 +52,13 @@ class Transaction:
 
     def _get_data_obj(self):
         data = {
-            "inputs": [i.json_obj() for i in self._inputs],
-            "outputs": [o.json_obj() for o in self._outputs]
+            "inputs": [i.serialize() for i in self._inputs],
+            "outputs": [o.serialize() for o in self._outputs]
         }
 
         return data
 
-    def json_obj(self):
+    def serialize(self):
         """Returns object as dictionary"""
         data = {
             "hash": self._hash,

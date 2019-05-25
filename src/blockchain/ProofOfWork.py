@@ -64,7 +64,7 @@ class ProofOfWork:
 
         return target
 
-    def json_obj(self):
+    def serialize(self):
         data = {
             "hash": self.__hash,
             "target": self.__target,

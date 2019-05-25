@@ -56,11 +56,11 @@ class Input:
 
         return self.__output_ref.get_value()
 
-    def json_obj(self, with_pubsig=True):
+    def serialize(self, with_pubsig=True):
         data = {
             "prev_tx": self.__prev_tx,
             "index": self.__index,
-            "output_ref": self.__output_ref.json_obj() if self.__output_ref else None,
+            "output_ref": self.__output_ref.serialize() if self.__output_ref else None,
         }
 
         if with_pubsig:
@@ -88,21 +88,21 @@ class Input:
         if self.__pubsig is None:
             return False
 
-        data = self.dump_json_obj(with_pubsig=False)
+        data = self.dump_serialization(with_pubsig=False)
         # check that referred output belongs to the input owner
         if not self.can_unlock(data, blockchain):
             return False
 
         return True
 
-    def dump_json_obj(self, with_pubsig=True):
-        data = json.dumps(self.json_obj(with_pubsig))
+    def dump_serialization(self, with_pubsig=True):
+        data = json.dumps(self.serialize(with_pubsig))
 
         return data
 
     @staticmethod
     def generate_pubsig(input, private_key):
-        data = input.dump_json_obj(with_pubsig=False)
+        data = input.dump_serialization(with_pubsig=False)
         sig = crypto.sign_message(data, private_key)
 
         return sig

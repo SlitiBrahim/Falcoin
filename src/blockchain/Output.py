@@ -16,7 +16,7 @@ class Output:
     def get_pubkey(self):
         return self.__pubkey
 
-    def json_obj(self):
+    def serialize(self):
         data = {
             "value": self.__value,
             "pubkey": self.__pubkey,
@@ -34,7 +34,7 @@ class Output:
 
     def hash(self):
         """Returns hash of output"""
-        data = json.dumps(self.json_obj())
+        data = json.dumps(self.serialize())
         hash = sha256(data.encode()).hexdigest()
 
         return hash

@@ -10,7 +10,7 @@ class Repository:
             self.__db = TinyDB(db_path)
 
     def insert(self, block):
-        self.__db.insert(block.json_obj())
+        self.__db.insert(block.serialize())
 
     def get_all_docs(self):
         return self.__db.all()
