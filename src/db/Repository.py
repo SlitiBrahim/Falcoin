@@ -9,7 +9,7 @@ class Repository:
         if self.__db is None:
             self.__db = TinyDB(db_path)
 
-    def insert(self, block):
+    def add(self, block):
         self.__db.insert(block.serialize())
 
     def get_all_docs(self):
