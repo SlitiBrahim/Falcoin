@@ -5,10 +5,10 @@ from hashlib import sha256
 
 class Output:
 
-    def __init__(self, value, pubkey):
+    def __init__(self, value, pubkey, timestamp = None):
         self.__value = value
         self.__pubkey = pubkey
-        self.__timestamp = time.time()
+        self.__timestamp = time.time() if timestamp is None else timestamp
 
     def get_value(self):
         return self.__value
@@ -29,8 +29,9 @@ class Output:
     def deserialize(dict):
         value = dict['value']
         pubkey = dict['pubkey']
+        time = dict['time']
 
-        return Output(value, pubkey)
+        return Output(value, pubkey, time)
 
     def hash(self):
         """Returns hash of output"""
