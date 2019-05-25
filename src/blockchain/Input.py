@@ -54,10 +54,7 @@ class Input:
         if self.is_empty():
             raise Exception("Cannot get value of an empty input.")
 
-        prev_tx_outputs = self.__prev_tx.get_outputs()
-        input_value = prev_tx_outputs[self.__index]
-
-        return input_value
+        return self.__output_ref.get_value()
 
     def json_obj(self, with_pubsig=True):
         data = {

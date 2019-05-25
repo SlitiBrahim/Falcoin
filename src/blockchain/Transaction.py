@@ -31,7 +31,7 @@ class Transaction:
 
     def get_total_inputs(self):
         # get value of all inputs in a list
-        tx_input_values = list(map(lambda i: i.get_output_ref().get_value(), self._inputs))
+        tx_input_values = list(map(lambda i: i.get_value(), self._inputs))
 
         return math.fsum(tx_input_values)
 
