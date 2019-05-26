@@ -13,8 +13,7 @@ def index_tx(tx_id):
 @app.route('/transactions', methods=['GET'])
 def list_tx():
     args = request.args
-    sender = args.get('sender')
-    receiver = args.get('receiver')
+    involved_pubkey = args.get('involved_pubkey')
 
     return jsonify({'transactions': '...'})
 
