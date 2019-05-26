@@ -13,7 +13,8 @@ def index_tx(tx_id):
 @app.route('/transactions', methods=['GET'])
 def list_tx():
     args = request.args
-    involved_pubkey = args.get('involved_pubkey')
+    pubkey = args.get('pubkey')
+    # TODO: call blockchain.get_transactions(pubkey)
 
     return jsonify({'transactions': '...'})
 
