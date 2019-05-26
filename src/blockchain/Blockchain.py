@@ -108,3 +108,16 @@ class Blockchain:
                         balance += tx_output.get_value()
 
         return balance
+
+    def get_transactions(self, pubkey):
+        """Will return all transactions where the given pubkey is involved.
+        Either as sender or receiver"""
+
+        txs = []
+
+        for block in self.__chain:
+            for tx in block.get_transactions():
+                if tx.is_involved(pubkey):
+                    txs.append(tx)
+
+        return txs
