@@ -6,3 +6,5 @@ services:
       context: ./docker/app
     volumes:
       - .:/app
+    ports:
+      - "8080:5000"
