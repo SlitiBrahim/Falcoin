@@ -25,4 +25,5 @@ def create_tx():
 
 @app.route('/balance/<string:pubkey>', methods=['GET'])
 def balance(pubkey):
+    # TODO: call blockchain.count_balance(pubkey)
     return jsonify({'balance': 50})
