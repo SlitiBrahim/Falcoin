@@ -5,8 +5,9 @@ app = Flask(__name__)
 def run():
     app.run(host='0.0.0.0', debug=True)
 
-@app.route('/transactions/<int:tx_id>', methods=['GET'])
+@app.route('/transactions/<string:tx_id>', methods=['GET'])
 def index_tx(tx_id):
+    # TODO: Use Blockchain.find_block(tx_id)
     return jsonify({'transaction': 'tx id {}'.format(tx_id)})
 
 @app.route('/transactions', methods=['GET'])
@@ -19,6 +20,7 @@ def list_tx():
 
 @app.route('/transactions', methods=['POST'])
 def create_tx():
+    # TODO: add tx to transaction pool and share through p2p
     return jsonify("new tx")
 
 @app.route('/balance/<string:pubkey>', methods=['GET'])
