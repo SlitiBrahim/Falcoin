@@ -96,16 +96,18 @@ class Blockchain:
     def count_balance(self, pubkey):
         balance = 0.0
 
-        for block in self.__chain:
-            for tx in block.get_transactions():
-                for tx_input in tx.get_inputs():
-                    if not tx_input.is_empty():
-                        txo = tx_input.get_output_ref()
-                        if pubkey == txo.get_pubkey():
-                            balance -= txo.get_value()
-                for tx_output in tx.get_outputs():
-                    if pubkey == tx_output.get_pubkey():
-                        balance += tx_output.get_value()
+        # transaction where the given pubkey is involved
+        txs = self.get_transactions(pubkey)
+
+        for tx in txs:
+            for tx_input in tx.get_inputs():
+                if not tx_input.is_empty():
+                    txo = tx_input.get_output_ref()
+                    if pubkey == txo.get_pubkey():
+                        balance -= txo.get_value()
+            for tx_output in tx.get_outputs():
+                if pubkey == tx_output.get_pubkey():
+                    balance += tx_output.get_value()
 
         return balance
 
