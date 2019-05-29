@@ -1,4 +1,5 @@
 import argparse
+from api import api
 
 def main():
     parser = argparse.ArgumentParser(description='Client for Falcoin Blockchain.')
@@ -14,6 +15,8 @@ def main():
 
     if args.exposeApi:
         print("Expose api")
+        thread_api = api.get_thread()
+        thread_api.start()
 
     print("run client as {} node.".format(args.node))
 
