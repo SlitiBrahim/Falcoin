@@ -10,7 +10,7 @@ blockchain = None
 def run():
     app.run(host='0.0.0.0', debug=True, use_reloader=False)
 
-def get_thread(global_blockchain):
+def init_thread(global_blockchain):
     # use the blockchain declared in the module outside of any function
     global blockchain
     # set global blockchain
@@ -27,11 +27,16 @@ def index_tx(tx_id):
 
 @app.route('/transactions', methods=['GET'])
 def list_tx():
+    global blockchain
+
     args = request.args
     pubkey = args.get('pubkey')
-    # TODO: call blockchain.get_transactions(pubkey)
 
-    return jsonify({'transactions': '...'})
+    txs = blockchain.get_transactions(pubkey)
+    # serialize transactions
+    s_txs = [tx.serialize() for tx in txs]
+
+    return jsonify({'transactions': s_txs})
 
 @app.route('/transactions', methods=['POST'])
 def create_tx():
@@ -40,5 +45,8 @@ def create_tx():
 
 @app.route('/balance/<string:pubkey>', methods=['GET'])
 def balance(pubkey):
-    # TODO: call blockchain.count_balance(pubkey)
-    return jsonify({'balance': 50})
+    global blockchain
+
+    balance = blockchain.count_balance(pubkey)
+
+    return jsonify({'balance': balance})
