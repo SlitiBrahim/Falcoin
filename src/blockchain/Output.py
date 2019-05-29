@@ -60,6 +60,14 @@ class Output:
         # output not referred in any input
         return None
 
+    def is_spent(self, blockchain):
+        output_block = blockchain.find_output_block(self)
+
+        if self.find_reference(output_block, blockchain) is not None:
+            return True
+
+        return False
+
     @staticmethod
     def total_output_values(outputs):
         tx_output_values = [output.get_value() for output in outputs]

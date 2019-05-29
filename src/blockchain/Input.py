@@ -38,7 +38,7 @@ class Input:
         output_ref's receiver must be the one who signed the current input
         """
 
-        if self.is_output_spent(blockchain):
+        if self.__output_ref.is_spent(blockchain):
             return False
 
         # get output_ref's receiver
