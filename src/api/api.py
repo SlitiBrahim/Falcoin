@@ -1,5 +1,6 @@
 from flask import Flask, jsonify, request
 from threading import Thread
+from blockchain import Transaction
 
 app = Flask(__name__)
 
@@ -22,8 +23,12 @@ def init_thread(global_blockchain):
 def index_tx(tx_id):
     global blockchain
 
-    # TODO: Use Blockchain.find_block(tx_id)
-    return jsonify({'transaction': 'tx id {}'.format(blockchain[0])})
+    tx = Transaction.get_tx_by_hash(tx_id, blockchain)
+    res = None
+    if tx is not None:
+        res = tx.serialize()
+
+    return jsonify(res)
 
 @app.route('/transactions', methods=['GET'])
 def list_tx():
