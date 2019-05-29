@@ -53,8 +53,6 @@ class Block:
         self._transactions = transactions
         self._merkle_root = Transaction.merkle_root(self._transactions)
 
-    # TODO: Add add_transaction method who  check if transaction is already existing
-
     def get_timestamp(self):
         return self._timestamp
 
