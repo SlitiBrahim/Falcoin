@@ -15,7 +15,8 @@ def main():
 
     if args.exposeApi:
         print("Expose api")
-        api.run()
+        thread_api = api.get_thread()
+        thread_api.start()
 
     print("run client as {} node.".format(args.node))
 
