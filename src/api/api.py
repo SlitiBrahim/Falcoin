@@ -39,7 +39,8 @@ def list_tx():
 
     txs = blockchain.get_transactions(pubkey)
     # serialize transactions
-    s_txs = [tx.serialize() for tx in txs]
+    s_txs = [tx.serialize(with_txo_spent_prop=True,
+                          blockchain=blockchain) for tx in txs]
 
     return jsonify({'transactions': s_txs})
 

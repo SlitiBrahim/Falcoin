@@ -50,19 +50,19 @@ class Transaction:
     def set_fees(self, fees):
         self._fees = fees
 
-    def _get_data_obj(self):
+    def _get_data_obj(self, with_txo_spent_prop = False, blockchain = None):
         data = {
             "inputs": [i.serialize() for i in self._inputs],
-            "outputs": [o.serialize() for o in self._outputs]
+            "outputs": [o.serialize(with_txo_spent_prop, blockchain) for o in self._outputs]
         }
 
         return data
 
-    def serialize(self):
+    def serialize(self, with_txo_spent_prop = False, blockchain = None):
         """Returns object as dictionary"""
         data = {
             "hash": self._hash,
-            **self._get_data_obj(), # use unpack operator to include tx_data
+            **self._get_data_obj(with_txo_spent_prop, blockchain), # use unpack operator to include tx_data
             "fees": self.get_fees_amount()
         }
 

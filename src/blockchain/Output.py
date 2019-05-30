@@ -16,12 +16,15 @@ class Output:
     def get_pubkey(self):
         return self.__pubkey
 
-    def serialize(self):
+    def serialize(self, include_spent = False, blockchain = None):
         data = {
             "value": self.__value,
             "pubkey": self.__pubkey,
             "time": self.__timestamp
         }
+
+        if include_spent:
+            data["spent"] = self.is_spent(blockchain)
 
         return data
 
