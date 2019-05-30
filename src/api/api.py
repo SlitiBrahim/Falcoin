@@ -26,7 +26,7 @@ def index_tx(tx_id):
     tx = Transaction.get_tx_by_hash(tx_id, blockchain)
     res = None
     if tx is not None:
-        res = tx.serialize()
+        res = tx.serialize(with_txo_spent_prop=True, blockchain=blockchain)
 
     return jsonify(res)
 
