@@ -15,6 +15,7 @@ import os
 import argparse
 from api import api
 import time
+from p2p import utils as p2p_utils
 
 def main():
     parser = argparse.ArgumentParser(description='Client for Falcoin Blockchain.')
@@ -41,6 +42,7 @@ def main():
 
     print("run client as {} node.".format(args.node))
     print("hard coded nodes:", ', '.join(args.hc_nodes))
+    print("public ip:", p2p_utils.get_external_ip())
 
     # br_private_key, br_public_key = crypto.generate_key_pair()
     # yanis_private_key, yanis_public_key = crypto.generate_key_pair()
