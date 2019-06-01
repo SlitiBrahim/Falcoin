@@ -25,10 +25,10 @@ def main():
                         help='Run client as light or full node. Light node will not mine blocks.'
                              ' Will run a full node by default.')
     parser.set_defaults(node='full')
-    parser.add_argument('--hc-nodes', nargs='*',dest='hc_nodes',
-                        help='Set hard coded neighbour nodes.'
-                             ' List of ip_addr:port elements.')
-    parser.set_defaults(hc_nodes=[])
+    parser.add_argument('--hc-node', dest='is_hc_node', action='store_true',
+                        help='If set will define this node as an hard-coded one.'
+                             ' Standard node connects to hard-coded nodes to get list of node IPs.')
+    parser.set_defaults(is_hc_node=False)
 
     args = parser.parse_args()
 
@@ -40,7 +40,8 @@ def main():
         thread_api.start()
 
     print("run client as {} node.".format(args.node))
-    print("hard coded nodes:", ', '.join(args.hc_nodes))
+    if args.is_hc_node:
+        print("This node is an hard-coded node.")
 
     br_private_key, br_public_key = crypto.generate_key_pair()
     yanis_private_key, yanis_public_key = crypto.generate_key_pair()
