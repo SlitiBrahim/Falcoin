@@ -99,6 +99,9 @@ class Node(threading.Thread):
             data = sock.recv(1024)
             return data
 
+    def format_msg(self, msg):
+        return "server_addr:{}:{};msg:{}".format(self.__host, self.__port, msg)
+
     @staticmethod
     def __print_addr(host, port):
         return "{}:{}".format(host, port)
