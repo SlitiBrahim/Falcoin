@@ -16,6 +16,7 @@ import argparse
 from api import api
 import time
 from p2p import utils as p2p_utils
+from p2p import Node
 
 def main():
     parser = argparse.ArgumentParser(description='Client for Falcoin Blockchain.')
@@ -43,6 +44,26 @@ def main():
     print("run client as {} node.".format(args.node))
     if args.is_hc_node:
         print("This node is an hard-coded node.")
+
+    host = '127.0.0.1'
+    port = os.environ.get('PORT')
+    if port is None:
+        raise Exception("Please set 'PORT' env var with the port used by the app.")
+    else:
+        port = int(port)
+
+    node = Node(host, port)
+    node.init_server()
+    # Start server
+    node.start()
+
+    # if not hc node, connect to hc node to get IPs list
+    if not args.is_hc_node:
+        hc_node_addr = (host, 51001)
+        res_data = node.send(*hc_node_addr, node.format_msg(Node.MSG_REGISTER_ME))
+        print("Received:", repr(res_data))
+        # TODO: Get IP list, test and save it (in-memory)
+
 
     # br_private_key, br_public_key = crypto.generate_key_pair()
     # yanis_private_key, yanis_public_key = crypto.generate_key_pair()
