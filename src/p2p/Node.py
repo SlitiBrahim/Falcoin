@@ -4,10 +4,11 @@ import re
 
 class Node(threading.Thread):
 
-    MSG_IPLIST = "IPLIST"
+    MSG_GET_NODES = "GET_NODES"
     MSG_REGISTER_ME = "REGISTER_ME"
 
     RES_OK = "OK"
+    RES_INVALID_MSG = "INVALID_MSG"
     RES_ALREADY_REGISTERED = "ALREADY_REGISTERED"
 
     def __init__(self, host, port):
@@ -51,6 +52,27 @@ class Node(threading.Thread):
 
         return res
 
+    def get_nodes_list(self, node=None):
+        nodes = self.__nodes[:]
+
+        if node is not None:
+            curr_node_index = -1
+            # removing the node asking for nodes from list
+            for index, r_node in enumerate(nodes):
+                if r_node == node:
+                    curr_node_index = index
+                    break
+
+            if curr_node_index >= 0:
+                nodes.pop(curr_node_index)
+
+        print("debug:", nodes)
+        res = ";".join(map(lambda n: "{}:{}".format(*n), nodes))
+        if len(nodes) == 1:
+            res += ';'
+
+        return res
+
     def init_server(self):
         print("Initializing server on {}".format(Node.__print_addr(self.__host, self.__port)))
         self.__srv_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -61,9 +83,32 @@ class Node(threading.Thread):
         # match ex: "server_addr:127.0.0.1:51100;msg:REGISTER_ME"
         msg_reg = "^server_addr\:((?:[0-9]{1,3}\.){3}[0-9]{1,3})\:([0-9]+);msg\:(.+)$"
         host, port, msg = re.match(msg_reg, msg).groups()
+        node = (host, port)
 
         if msg == Node.MSG_REGISTER_ME:
-            return self.register_node((host, port))
+            return self.register_node(node)
+        elif msg == Node.MSG_GET_NODES:
+            return self.get_nodes_list(node)
+        else:
+            return Node.RES_INVALID_MSG
+
+    @staticmethod
+    def parse_str_node(str_node):
+        # match ex: "127.0.0.1:51100"
+        node_reg = "^((?:[0-9]{1,3}\.){3}[0-9]{1,3})\:([0-9]+)$"
+        node = re.match(node_reg, str_node).groups()
+
+        return node
+
+    @staticmethod
+    def parse_nodes_msg(nodes_msg):
+        str_nodes = nodes_msg.split(';')
+        print("str_nodes", str_nodes)
+        str_nodes = filter(lambda str_n: str_n != '', str_nodes)
+
+        nodes = list(map(lambda n: Node.parse_str_node(n), str_nodes))
+
+        return nodes
 
     def run(self):
         """Will be run in a thread."""
@@ -78,6 +123,7 @@ class Node(threading.Thread):
                     if data:
                         print("received data:", data)
                         res = self.treat_msg(data.decode('utf-8'))
+                        print("res", res)
                         conn.sendall(str.encode(res))
                     else:
                         break
@@ -97,7 +143,7 @@ class Node(threading.Thread):
             print("Sending message: {}".format(data))
             sock.sendall(str.encode(data))
             data = sock.recv(1024)
-            return data
+            return data.decode('utf-8')
 
     def format_msg(self, msg):
         return "server_addr:{}:{};msg:{}".format(self.__host, self.__port, msg)

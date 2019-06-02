@@ -61,7 +61,10 @@ def main():
     if not args.is_hc_node:
         hc_node_addr = (host, 51001)
         res_data = node.send(*hc_node_addr, node.format_msg(Node.MSG_REGISTER_ME))
-        print("Received:", repr(res_data))
+        print("Received:", res_data)
+        res_data = node.send(*hc_node_addr, node.format_msg(Node.MSG_GET_NODES))
+        nodes = Node.parse_nodes_msg(res_data)
+        print("nodes:", nodes)
         # TODO: Get IP list, test and save it (in-memory)
 
 
