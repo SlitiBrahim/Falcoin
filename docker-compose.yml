@@ -8,3 +8,6 @@ services:
       - .:/app
     ports:
       - "8080:5000"
+      - "51100:51100"
+    environment:
+      - PORT=51100
