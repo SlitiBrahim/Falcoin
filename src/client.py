@@ -63,10 +63,11 @@ def main():
         res_data = node.send(*hc_node_addr, node.format_msg(Node.MSG_REGISTER_ME))
         print("Received:", res_data)
         res_data = node.send(*hc_node_addr, node.format_msg(Node.MSG_GET_NODES))
+
         nodes = Node.parse_nodes_msg(res_data)
         print("nodes:", nodes)
-        # TODO: Get IP list, test and save it (in-memory)
-
+        for n in nodes:
+            node.add_node(n)
 
     # br_private_key, br_public_key = crypto.generate_key_pair()
     # yanis_private_key, yanis_public_key = crypto.generate_key_pair()
