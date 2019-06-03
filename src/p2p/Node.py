@@ -1,11 +1,13 @@
 import threading
 import socket
 import re
+import random
 
 class Node(threading.Thread):
 
     MSG_GET_NODES = "GET_NODES"
     MSG_REGISTER_ME = "REGISTER_ME"
+    MSG_PING = "PING"
 
     RES_OK = "OK"
     RES_INVALID_MSG = "INVALID_MSG"
@@ -144,6 +146,13 @@ class Node(threading.Thread):
             sock.sendall(str.encode(data))
             data = sock.recv(1024)
             return data.decode('utf-8')
+
+    def ping(self, node):
+        print("Ping", Node.__print_addr(*node))
+        nonce = random.randint(1, 1001)
+        msg = "{};nonce={}".format(self.format_msg(Node.MSG_PING), nonce)
+
+        return self.send(*node, msg)
 
     def format_msg(self, msg):
         return "server_addr:{}:{};msg:{}".format(self.__host, self.__port, msg)
