@@ -105,7 +105,6 @@ class Node(threading.Thread):
     @staticmethod
     def parse_nodes_msg(nodes_msg):
         str_nodes = nodes_msg.split(';')
-        print("str_nodes", str_nodes)
         str_nodes = filter(lambda str_n: str_n != '', str_nodes)
 
         nodes = list(map(lambda n: Node.parse_str_node(n), str_nodes))
