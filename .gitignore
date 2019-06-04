@@ -3,3 +3,4 @@
 /src/*.pyc
 .DS_Store
 /db/*.db
+/venv/
