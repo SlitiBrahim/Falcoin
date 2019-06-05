@@ -121,8 +121,8 @@ class Blockchain:
         for block in self.__chain:
             for tx in block.get_transactions():
                 # if pubkey is passed and tx does'nt involve given pubkey
-                if pubkey is not None and not tx.is_involved(pubkey):
-                    break
+                if pubkey is not None and tx.is_involved(pubkey) is False:
+                    continue
 
                 txs.append(tx)
 
