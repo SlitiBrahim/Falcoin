@@ -88,10 +88,10 @@ class Blockchain:
             for tx in block.get_transactions():
                 for tx_output in tx.get_outputs():
                     if tx_output.hash() == output_hash:
-                        return block
+                        return block, tx
 
-        # block not found
-        return None
+        # block not found, tx not found
+        return None, None
 
     def count_balance(self, pubkey):
         balance = 0.0

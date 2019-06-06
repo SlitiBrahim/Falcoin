@@ -26,7 +26,7 @@ class Input:
 
     def is_output_spent(self, blockchain):
         output = self.__output_ref
-        output_block = blockchain.find_output_block(output)
+        output_block, _ = blockchain.find_output_block(output)
 
         if output.find_reference(output_block, blockchain) is not None:
             return True

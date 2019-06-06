@@ -212,3 +212,12 @@ class Transaction:
                 return True
 
         return False
+
+    def get_index(self, output):
+        output_hash = output.hash()
+
+        for index, txo in enumerate(self.get_outputs()):
+            if txo.hash() == output_hash:
+                return index
+
+        return -1

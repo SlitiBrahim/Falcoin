@@ -6,7 +6,7 @@ from hashlib import sha256
 class Output:
 
     def __init__(self, value, pubkey, timestamp = None):
-        self.__value = value
+        self.__value = float(value)
         self.__pubkey = pubkey
         self.__timestamp = time.time() if timestamp is None else timestamp
 
@@ -30,9 +30,9 @@ class Output:
 
     @staticmethod
     def deserialize(dict):
-        value = dict['value']
+        value = float(dict['value'])
         pubkey = dict['pubkey']
-        time = dict['time']
+        time = float(dict['time'])
 
         return Output(value, pubkey, time)
 
@@ -64,7 +64,7 @@ class Output:
         return None
 
     def is_spent(self, blockchain):
-        output_block = blockchain.find_output_block(self)
+        output_block, _ = blockchain.find_output_block(self)
 
         if self.find_reference(output_block, blockchain) is not None:
             return True

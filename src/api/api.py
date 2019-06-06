@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, request
 from threading import Thread
 from blockchain import Transaction
+from blockchain import Output
 
 app = Flask(__name__)
 
@@ -56,3 +57,22 @@ def balance(pubkey):
     balance = blockchain.count_balance(pubkey)
 
     return jsonify({'balance': balance})
+
+@app.route('/output_information', methods=['POST'])
+def get_output_info():
+    global blockchain
+
+    # get output from body req
+    data = request.form
+    try:
+        output = Output.deserialize(data)
+    except:
+        return jsonify({'error': 'Invalid Output JSON object.'})
+
+    output_block, output_tx = blockchain.find_output_block(output)
+    if output_block is None:
+        return jsonify({'error': 'Could not find block of the given output.'})
+
+    txo_index = output_tx.get_index(output)
+
+    return jsonify({'tx_hash': output_tx.get_hash(), 'txo_index': txo_index})
