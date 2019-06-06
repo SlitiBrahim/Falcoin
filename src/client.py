@@ -100,6 +100,8 @@ def main():
     print("yanis_pubkey", yanis_public_key)
     print("miner_pubkey", miner_public_key)
 
+    print("block 1:", block1)
+
     # my_txs = blockchain.get_transactions(my_public_key)
 
     # ========= DB =========
