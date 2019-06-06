@@ -95,6 +95,7 @@ def main():
 
     blockchain.add_block_to_chain(block2)
 
+    print("br_privkey", br_private_key)
     print("br_pubkey", br_public_key)
     print("yanis_pubkey", yanis_public_key)
     print("miner_pubkey", miner_public_key)
