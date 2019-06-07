@@ -1,7 +1,8 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, Response
 from threading import Thread
 from blockchain import Transaction
 from blockchain import Output
+import json
 
 app = Flask(__name__)
 
@@ -47,8 +48,15 @@ def list_tx():
 
 @app.route('/transactions', methods=['POST'])
 def create_tx():
+    data = request.json
+    try:
+        transaction = Transaction.deserialize(data)
+    except:
+        return jsonify({'error': 'Invalid Transaction JSON object.'})
+
     # TODO: add tx to transaction pool and share through p2p
-    return jsonify("new tx")
+
+    return Response("Transaction added to transaction pool.", status=200)
 
 @app.route('/balance/<string:pubkey>', methods=['GET'])
 def balance(pubkey):
