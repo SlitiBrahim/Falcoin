@@ -33,10 +33,11 @@ def main():
     args = parser.parse_args()
 
     blockchain = Blockchain()
+    tx_pool = []
 
     if args.exposeApi:
         print("Expose api")
-        thread_api = api.init_thread(blockchain)
+        thread_api = api.init_thread(blockchain, tx_pool)
         thread_api.start()
 
     print("run client as {} node.".format(args.node))

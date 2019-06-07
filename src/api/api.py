@@ -9,15 +9,19 @@ app = Flask(__name__)
 # global blockchain used in read-only here
 # blockchain wich will be updated by p2p nodes
 blockchain = None
+tx_pool = None
 
 def run():
     app.run(host='0.0.0.0', debug=True, use_reloader=False)
 
-def init_thread(global_blockchain):
+def init_thread(global_blockchain, global_tx_pool):
     # use the blockchain declared in the module outside of any function
     global blockchain
     # set global blockchain
     blockchain = global_blockchain
+
+    global tx_pool
+    tx_pool = global_tx_pool
 
     return Thread(target=run)
 
@@ -48,13 +52,18 @@ def list_tx():
 
 @app.route('/transactions', methods=['POST'])
 def create_tx():
+    global tx_pool
+
     data = request.json
     try:
         transaction = Transaction.deserialize(data)
     except:
         return jsonify({'error': 'Invalid Transaction JSON object.'})
 
-    # TODO: add tx to transaction pool and share through p2p
+    # TODO: Share to other nodes through p2p
+    tx_pool.append(transaction)
+
+    print(tx_pool)
 
     return Response("Transaction added to transaction pool.", status=200)
 
